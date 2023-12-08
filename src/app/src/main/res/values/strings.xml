@@ -5,4 +5,13 @@
     <string name="confirm_password">Confirm password</string>
     <string name="sign_up">Sign Up</string>
     <string name="sign_in_to_existing_account">Sign in to existing account</string>
+    <string name="sign_in">Sign In</string>
+    <string name="create_new_account">Create new account</string>
+    <string name="passwords_do_not_match">Passwords do not match</string>
+    <string name="invalid_email_format">Invalid email format</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="invalid_email_or_password">Invalid email or password</string>
+    <string name="weak_password">Weak password</string>
+    <string name="invalid_password">Invalid password</string>
+    <string name="email_already_in_use">Email already in use</string>
 </resources>

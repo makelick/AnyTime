@@ -1,4 +1,4 @@
-package com.makelick.anytime
+package com.makelick.anytime.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
