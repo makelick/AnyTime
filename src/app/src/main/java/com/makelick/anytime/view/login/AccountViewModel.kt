@@ -1,5 +1,6 @@
 package com.makelick.anytime.view.login
 
+import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -17,6 +18,13 @@ class AccountViewModel @Inject constructor(
 
     val isLoginMode = MutableStateFlow(true)
     val result = MutableSharedFlow<Result<Unit>>()
+
+    val googleSignInIntent: Intent
+        get() = accountRepository.getGoogleSignInIntent()
+
+    fun changeMode() {
+        isLoginMode.value = !isLoginMode.value
+    }
 
     fun login(email: String, password: String) {
         viewModelScope.launch {

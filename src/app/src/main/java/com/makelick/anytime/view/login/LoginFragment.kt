@@ -10,8 +10,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
@@ -29,7 +27,6 @@ class LoginFragment :
     BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::inflate) {
 
     private val viewModel: AccountViewModel by activityViewModels()
-    private lateinit var googleSignInClient: GoogleSignInClient
 
     private val googleSignInLauncher: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -48,19 +45,8 @@ class LoginFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setupGoogleSignIn()
         observeViewModel()
         setupUI()
-    }
-
-    private fun setupGoogleSignIn() {
-        val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.google_web_client_id))
-            .requestEmail()
-            .build()
-
-        googleSignInClient = GoogleSignIn.getClient(requireActivity(), options)
     }
 
     private fun observeViewModel() {
@@ -136,7 +122,7 @@ class LoginFragment :
             }
 
             changeMode.setOnClickListener {
-                viewModel.isLoginMode.value = !viewModel.isLoginMode.value
+                viewModel.changeMode()
 
                 clearErrors()
                 clearInputs()
@@ -197,6 +183,6 @@ class LoginFragment :
     }
 
     private fun signInWithGoogle() {
-        googleSignInLauncher.launch(googleSignInClient.signInIntent)
+        googleSignInLauncher.launch(viewModel.googleSignInIntent)
     }
 }

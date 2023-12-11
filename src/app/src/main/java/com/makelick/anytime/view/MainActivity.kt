@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
 
     fun enableBottomNav() {
         binding.bottomNavigationView.visibility = View.VISIBLE
+        binding.bottomNavigationView.selectedItemId = R.id.tasks
     }
 
     fun disableBottomNav() {
