@@ -36,4 +36,8 @@ class AccountRepository @Inject constructor() {
             Result.failure(e)
         }
     }
+
+    fun signOut() {
+        Firebase.auth.signOut()
+    }
 }

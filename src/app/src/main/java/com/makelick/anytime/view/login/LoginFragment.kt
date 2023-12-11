@@ -8,6 +8,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -19,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.makelick.anytime.R
 import com.makelick.anytime.databinding.FragmentLoginBinding
 import com.makelick.anytime.view.BaseFragment
+import com.makelick.anytime.view.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -113,7 +115,8 @@ class LoginFragment :
                 root.clearFocus()
             }
         } else {
-            Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.tasksFragment)
+            (activity as MainActivity).enableBottomNav()
         }
     }
 
