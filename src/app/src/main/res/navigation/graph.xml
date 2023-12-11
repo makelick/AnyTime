@@ -3,22 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/graph.xml"
-    app:startDestination="@id/loginSplashFragment">
+    app:startDestination="@id/splashFragment">
 
-    <fragment
-        android:id="@+id/loginSplashFragment"
-        android:name="com.makelick.anytime.view.login.LoginSplashFragment"
-        android:label="fragment_login_splash"
-        tools:layout="@layout/fragment_login_splash" >
-        <action
-            android:id="@+id/action_loginSplashFragment_to_tasksFragment"
-            app:destination="@id/tasksFragment" />
-    </fragment>
     <fragment
         android:id="@+id/calendarFragment"
         android:name="com.makelick.anytime.view.calendar.CalendarFragment"
         android:label="fragment_calendar"
-        tools:layout="@layout/fragment_calendar" >
+        tools:layout="@layout/fragment_calendar">
         <action
             android:id="@+id/action_calendarFragment_to_taskInfoFragment"
             app:destination="@id/taskInfoFragment" />
@@ -32,7 +23,7 @@
         android:id="@+id/profileFragment"
         android:name="com.makelick.anytime.view.profile.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" >
+        tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_profileFragment_to_categoriesFragment"
             app:destination="@id/categoriesFragment" />
@@ -41,7 +32,7 @@
         android:id="@+id/tasksFragment"
         android:name="com.makelick.anytime.view.tasks.TasksFragment"
         android:label="fragment_tasks"
-        tools:layout="@layout/fragment_tasks" >
+        tools:layout="@layout/fragment_tasks">
         <action
             android:id="@+id/action_tasksFragment_to_taskInfoFragment"
             app:destination="@id/taskInfoFragment" />
@@ -63,9 +54,30 @@
         android:id="@+id/taskInfoFragment"
         android:name="com.makelick.anytime.view.taskinfo.TaskInfoFragment"
         android:label="fragment_task_info"
-        tools:layout="@layout/fragment_task_info" >
+        tools:layout="@layout/fragment_task_info">
         <action
             android:id="@+id/action_taskInfoFragment_to_editTaskFragment"
             app:destination="@id/editTaskFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.makelick.anytime.view.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_tasksFragment"
+            app:destination="@id/tasksFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.makelick.anytime.view.splash.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_tasksFragment"
+            app:destination="@id/tasksFragment" />
     </fragment>
 </navigation>

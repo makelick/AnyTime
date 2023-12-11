@@ -1,8 +1,10 @@
-package com.makelick.anytime
+package com.makelick.anytime.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
+import com.makelick.anytime.R
 import com.makelick.anytime.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -49,5 +51,13 @@ class MainActivity : AppCompatActivity() {
         } catch (e: Exception) {
             false
         }
+    }
+
+    fun enableBottomNav() {
+        binding.bottomNavigationView.visibility = View.VISIBLE
+    }
+
+    fun disableBottomNav() {
+        binding.bottomNavigationView.visibility = View.GONE
     }
 }

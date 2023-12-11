@@ -16,10 +16,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/graph"
-        tools:context=".MainActivity" />
+        tools:context=".view.MainActivity" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_view"
+        android:visibility="gone"
         android:layout_width="0dp"
         android:layout_height="75dp"
         app:layout_constraintBottom_toBottomOf="parent"

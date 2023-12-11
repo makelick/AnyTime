@@ -17,14 +17,14 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.makelick.anytime.R
-import com.makelick.anytime.databinding.FragmentLoginSplashBinding
+import com.makelick.anytime.databinding.FragmentLoginBinding
 import com.makelick.anytime.view.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class LoginSplashFragment :
-    BaseFragment<FragmentLoginSplashBinding>(FragmentLoginSplashBinding::inflate) {
+class LoginFragment :
+    BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::inflate) {
 
     private val viewModel: AccountViewModel by activityViewModels()
     private lateinit var googleSignInClient: GoogleSignInClient
