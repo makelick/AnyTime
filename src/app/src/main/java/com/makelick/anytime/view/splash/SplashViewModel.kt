@@ -9,5 +9,5 @@ import javax.inject.Inject
 class SplashViewModel @Inject constructor(
     private val accountRepository: AccountRepository
 ) : ViewModel() {
-    fun isUserLoggedIn() = accountRepository.user != null
+    fun isUserLoggedIn() = accountRepository.getUser() != null
 }

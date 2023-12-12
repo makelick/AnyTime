@@ -2,12 +2,14 @@ package com.makelick.anytime.model
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 import com.makelick.anytime.R
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -30,8 +32,14 @@ class AccountRepository @Inject constructor(
                 .build()
         )
 
-    val user
-        get() = auth.currentUser
+    fun getUser() = auth.currentUser
+
+    fun updateProfile(username: String, photoUrl: Uri?) {
+        auth.currentUser?.updateProfile(userProfileChangeRequest {
+            displayName = username
+            photoUri = photoUrl
+        })
+    }
 
     suspend fun signIn(email: String, password: String): Result<Unit> {
         return try {

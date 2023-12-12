@@ -24,4 +24,12 @@
     <string name="task">Task</string>
     <string name="categories">Categories</string>
     <string name="sign_out">Sign Out</string>
+    <string name="profile_picture">profile picture</string>
+    <string name="username">Username</string>
+    <string name="edit">Edit</string>
+    <string name="completed_tasks">Completed\ntasks</string>
+    <string name="uncompleted_tasks">Uncompleted\ntasks</string>
+    <string name="manage_categories">Manage Categories</string>
+    <string name="save">Save</string>
+    <string name="tap_to_change">Tap to change</string>
 </resources>

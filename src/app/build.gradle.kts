@@ -58,9 +58,13 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-storage-ktx")
 
     // Google OAuth
     implementation("com.google.android.gms:play-services-auth:20.7.0")
+
+    // Coil
+    implementation("io.coil-kt:coil:2.5.0")
 
     // Default dependencies
     implementation("androidx.core:core-ktx:1.12.0")
