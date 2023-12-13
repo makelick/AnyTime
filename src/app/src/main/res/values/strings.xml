@@ -33,4 +33,5 @@
     <string name="save">Save</string>
     <string name="tap_to_change">Tap to change</string>
     <string name="add_task">add task</string>
+    <string name="active_tasks">Active Tasks:</string>
 </resources>

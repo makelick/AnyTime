@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.tasks.TasksFragment">
 
     <LinearLayout
@@ -13,23 +13,23 @@
         android:layout_margin="20dp"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spinnerPriority"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginEnd="10dp"
-            android:layout_weight="1"
-            android:id="@+id/spinnerPriority"/>
+            android:layout_weight="1" />
 
         <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spinnerCategory"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginStart="10dp"
-            android:layout_weight="1"
-            android:id="@+id/spinnerCategory"/>
+            android:layout_weight="1" />
 
     </LinearLayout>
 
@@ -39,19 +39,19 @@
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:listitem="@layout/item_tasklist"
-        app:layout_constraintTop_toBottomOf="@id/spinerLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spinerLayout"
+        tools:listitem="@layout/item_tasklist" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addTaskButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
+        android:contentDescription="@string/add_task"
         android:src="@drawable/ic_add"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="@string/add_task" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

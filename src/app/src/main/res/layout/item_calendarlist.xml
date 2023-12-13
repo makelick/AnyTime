@@ -13,28 +13,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <CheckBox
-            android:id="@+id/taskCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:scaleX="1.5"
-            android:scaleY="1.5"
-            app:layout_constraintBottom_toBottomOf="@id/taskTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/taskTitle" />
-
         <TextView
             android:id="@+id/taskTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="20dp"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/taskPriority"
-            app:layout_constraintStart_toEndOf="@id/taskCheckBox"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/taskPriority"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Task Title" />
 
@@ -44,7 +33,7 @@
             android:layout_height="0dp"
             android:background="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
 
