@@ -43,4 +43,9 @@
     <string name="medium_priority">Medium priority</string>
     <string name="high_priority">High priority</string>
     <string name="underlined"><![CDATA[<u>%s</u>]]></string>
+    <string name="pomodoro">Pomodoro</string>
+    <string name="stay_focused_on_your_task">Stay focused on your task</string>
+    <string name="start">start</string>
+    <string name="restart">restart</string>
+    <string name="next">next</string>
 </resources>
