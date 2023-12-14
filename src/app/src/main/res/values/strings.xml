@@ -37,4 +37,10 @@
     <string name="back">back</string>
     <string name="delete">Delete</string>
     <string name="add_category">+ Add Category</string>
+    <string name="name">Name</string>
+    <string name="no_priority">No priority</string>
+    <string name="low_priority">Low priority</string>
+    <string name="medium_priority">Medium priority</string>
+    <string name="high_priority">High priority</string>
+    <string name="underlined"><![CDATA[<u>%s</u>]]></string>
 </resources>
