@@ -101,9 +101,13 @@ class LoginFragment :
                 root.clearFocus()
             }
         } else {
-            findNavController().navigate(R.id.tasksFragment)
-            (activity as MainActivity).enableBottomNav()
+            navigateToTasksFragment()
         }
+    }
+
+    private fun navigateToTasksFragment() {
+        findNavController().navigate(R.id.action_loginFragment_to_tasksFragment)
+        (activity as MainActivity).enableBottomNav()
     }
 
     private fun setupUI() {

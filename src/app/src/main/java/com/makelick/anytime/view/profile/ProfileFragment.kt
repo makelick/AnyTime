@@ -56,7 +56,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
             }
 
             buttonManageCategories.setOnClickListener {
-                findNavController().navigate(R.id.categoriesFragment)
+                navigateToCategories()
             }
 
             buttonLogOut.setOnClickListener {
@@ -64,6 +64,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
                 navigateToLogin()
             }
         }
+    }
+
+    private fun navigateToCategories() {
+        findNavController().navigate(R.id.action_profileFragment_to_categoriesFragment)
+        (activity as MainActivity).disableBottomNav()
     }
 
     private fun navigateToLogin() {
