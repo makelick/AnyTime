@@ -18,6 +18,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         configBottomNav()
+    }
+
+    override fun onStart() {
+        super.onStart()
         addNavigationListener()
     }
 
