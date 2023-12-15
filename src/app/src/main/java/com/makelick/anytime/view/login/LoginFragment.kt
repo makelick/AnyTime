@@ -107,7 +107,7 @@ class LoginFragment :
 
     private fun navigateToTasksFragment() {
         findNavController().navigate(R.id.action_loginFragment_to_tasksFragment)
-        (activity as MainActivity).enableBottomNav()
+        (activity as MainActivity).changeBottomNavSelectedId(R.id.tasks)
     }
 
     private fun setupUI() {

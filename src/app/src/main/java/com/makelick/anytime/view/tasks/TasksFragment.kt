@@ -6,7 +6,6 @@ import androidx.navigation.fragment.findNavController
 import com.makelick.anytime.R
 import com.makelick.anytime.databinding.FragmentTasksBinding
 import com.makelick.anytime.view.BaseFragment
-import com.makelick.anytime.view.MainActivity
 
 class TasksFragment : BaseFragment<FragmentTasksBinding>(FragmentTasksBinding::inflate) {
 
@@ -26,7 +25,6 @@ class TasksFragment : BaseFragment<FragmentTasksBinding>(FragmentTasksBinding::i
 
     private fun navigateToCreateTask() {
         findNavController().navigate(R.id.action_tasksFragment_to_editTaskFragment)
-        (activity as MainActivity).disableBottomNav()
     }
 
 }

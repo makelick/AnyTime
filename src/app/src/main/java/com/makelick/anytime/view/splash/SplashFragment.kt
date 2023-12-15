@@ -25,7 +25,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
             delay(1000)
             if (viewModel.isUserLoggedIn()) {
                 findNavController().navigate(R.id.action_splashFragment_to_tasksFragment)
-                (activity as MainActivity).enableBottomNav()
+                (activity as MainActivity).changeBottomNavSelectedId(R.id.tasks)
             } else {
                 findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
             }

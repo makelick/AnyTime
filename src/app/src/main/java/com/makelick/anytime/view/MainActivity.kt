@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         configBottomNav()
+        addNavigationListener()
     }
 
     private fun configBottomNav() {
@@ -53,12 +54,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun enableBottomNav() {
-        binding.bottomNavigationView.visibility = View.VISIBLE
-        binding.bottomNavigationView.selectedItemId = R.id.tasks
+    private fun addNavigationListener() {
+        findNavController(R.id.fragment_content_main).addOnDestinationChangedListener { _, destination, _ ->
+            binding.bottomNavigationView.visibility =
+            if (destination.id in arrayOf(
+                    R.id.focusFragment,
+                    R.id.tasksFragment,
+                    R.id.calendarFragment,
+                    R.id.profileFragment
+                )) View.VISIBLE
+            else View.GONE
+        }
     }
 
-    fun disableBottomNav() {
-        binding.bottomNavigationView.visibility = View.GONE
+    fun changeBottomNavSelectedId(destinationId: Int) {
+        binding.bottomNavigationView.selectedItemId = destinationId
     }
 }

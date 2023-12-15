@@ -14,7 +14,6 @@ import coil.transform.CircleCropTransformation
 import com.makelick.anytime.R
 import com.makelick.anytime.databinding.FragmentProfileBinding
 import com.makelick.anytime.view.BaseFragment
-import com.makelick.anytime.view.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -68,12 +67,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     private fun navigateToCategories() {
         findNavController().navigate(R.id.action_profileFragment_to_categoriesFragment)
-        (activity as MainActivity).disableBottomNav()
     }
 
     private fun navigateToLogin() {
         findNavController().navigate(R.id.loginFragment)
-        (activity as MainActivity).disableBottomNav()
     }
 
     private fun changeMode() {
