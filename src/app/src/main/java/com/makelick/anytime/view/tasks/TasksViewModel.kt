@@ -17,14 +17,27 @@ class TasksViewModel @Inject constructor(
     val isLoading = MutableStateFlow(true)
     val tasks = MutableStateFlow<List<Task>>(emptyList())
 
-    fun loadTasks() {
+    fun loadTasks(priority: Int, category: String) {
         viewModelScope.launch {
             tasks.emit(emptyList())
             isLoading.value = true
-            val result = firestoreRepository.getAllTasks()
-            tasks.emit(result.getOrDefault(emptyList()).sortedBy { it.isCompleted })
+            var result = firestoreRepository.getAllTasks().getOrDefault(emptyList())
+            if (priority != -1) {
+                result = result.filter { it.priority == priority }
+            }
+            if (category != "All categories") {
+                result = result.filter { it.category == category }
+            }
+
+            tasks.emit(result.sortedBy { it.isCompleted })
             isLoading.value = false
         }
+    }
+
+    suspend fun loadCategories(): List<String> {
+        val result = mutableListOf("All categories")
+        result.addAll(firestoreRepository.getCategories().getOrDefault(emptyList()))
+        return result
     }
 
     fun changeTaskStatus(task: Task) {

@@ -2,6 +2,8 @@ package com.makelick.anytime.view.tasks
 
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -27,19 +29,52 @@ class TasksFragment : BaseFragment<FragmentTasksBinding>(FragmentTasksBinding::i
 
     override fun onStart() {
         super.onStart()
-        viewModel.loadTasks()
+        loadTasks()
     }
 
     private fun setupUI() {
         with(binding) {
-            addTaskButton.setOnClickListener {
-                navigateToCreateTask()
+
+            lifecycleScope.launch {
+                spinnerCategory.adapter = ArrayAdapter(
+                    requireContext(),
+                    android.R.layout.simple_spinner_dropdown_item,
+                    viewModel.loadCategories()
+                )
             }
+
+            spinnerPriority.onItemSelectedListener = SpinnerOnItemSelectedListener()
+            spinnerCategory.onItemSelectedListener = SpinnerOnItemSelectedListener()
 
             tasksRecyclerView.apply {
                 adapter = TasksAdapter(viewModel::changeTaskStatus, ::navigateToTaskInfo)
                 layoutManager = LinearLayoutManager(requireContext())
             }
+
+            addTaskButton.setOnClickListener {
+                navigateToCreateTask()
+            }
+        }
+    }
+
+    private fun loadTasks() {
+        try {
+            viewModel.loadTasks(
+                binding.spinnerPriority.selectedItem.toString().convertPriorityToInt(),
+                binding.spinnerCategory.selectedItem.toString()
+            )
+        } catch (e: Exception) {
+            viewModel.loadTasks(-1, "All categories")
+        }
+    }
+
+    private fun String.convertPriorityToInt(): Int {
+        return when (this) {
+            getString(R.string.high_priority) -> 3
+            getString(R.string.medium_priority) -> 2
+            getString(R.string.low_priority) -> 1
+            getString(R.string.no_priority) -> 0
+            else -> -1
         }
     }
 
@@ -63,6 +98,16 @@ class TasksFragment : BaseFragment<FragmentTasksBinding>(FragmentTasksBinding::i
             viewModel.tasks.collect {
                 (binding.tasksRecyclerView.adapter as TasksAdapter).submitList(it)
             }
+        }
+    }
+
+    inner class SpinnerOnItemSelectedListener : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            loadTasks()
+        }
+
+        override fun onNothingSelected(p0: AdapterView<*>?) {
+            loadTasks()
         }
     }
 
