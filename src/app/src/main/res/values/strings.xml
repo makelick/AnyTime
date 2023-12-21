@@ -51,6 +51,11 @@
     <string name="task_deleted">Task deleted</string>
     <string name="date">Date:</string>
     <string name="description">Description</string>
+    <string name="category_name_empty_error_message">Category name cannot be empty</string>
+    <string name="category_created_message">Category %s created</string>
+    <string name="create_category_dialog_title">Create category</string>
+    <string name="create">Create</string>
+    <string name="cancel">Cancel</string>
 
     <string-array name="priority_list">
         <item>All priority</item>

@@ -30,4 +30,13 @@ class CategoriesViewModel @Inject constructor(
             categories.emit(newCategories)
         }
     }
+
+    fun addCategory(category: String) {
+        viewModelScope.launch {
+            val newCategories = categories.value.toMutableList()
+            newCategories.add(category)
+            firestoreRepository.updateCategories(newCategories)
+            categories.emit(newCategories)
+        }
+    }
 }
