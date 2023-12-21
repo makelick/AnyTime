@@ -4,7 +4,6 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.makelick.anytime.model.entity.Task
 import kotlinx.coroutines.tasks.await
-import java.util.Date
 import javax.inject.Inject
 
 class FirestoreRepository @Inject constructor(
@@ -30,9 +29,9 @@ class FirestoreRepository @Inject constructor(
         tasksCollectionRef.get().await().toObjects(Task::class.java)
     }
 
-    suspend fun getTasksByDate(date: Date) = performFirestoreOperation {
-        tasksCollectionRef.whereEqualTo("date", date).get().await()
-            .toObjects(Task::class.java)
+    suspend fun getUncompletedTasksByDate(date: String) = performFirestoreOperation {
+        tasksCollectionRef.whereEqualTo("date", date).whereEqualTo("completed", false)
+            .get().await().toObjects(Task::class.java)
     }
 
     suspend fun getCompletedTasksCount() = performFirestoreOperation {

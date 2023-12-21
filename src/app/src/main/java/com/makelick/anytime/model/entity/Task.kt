@@ -2,7 +2,6 @@ package com.makelick.anytime.model.entity
 
 import com.google.firebase.firestore.DocumentId
 import java.io.Serializable
-import java.util.Date
 
 
 data class Task(
@@ -11,6 +10,6 @@ data class Task(
     val title: String? = null,
     val category: String? = null,
     val priority: Int? = null,
-    val date: Date? = null,
+    val date: String? = null,
     val description: String? = null
 ) : Serializable

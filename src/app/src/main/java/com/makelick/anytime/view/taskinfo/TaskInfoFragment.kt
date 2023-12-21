@@ -55,7 +55,7 @@ class TaskInfoFragment : BaseFragment<FragmentTaskInfoBinding>(FragmentTaskInfoB
                 else -> getColor(requireContext(), R.color.no_priority)
             })
 
-            date.text = task.date.toString()
+            date.text = task.date
 
             description.text = task.description
 
