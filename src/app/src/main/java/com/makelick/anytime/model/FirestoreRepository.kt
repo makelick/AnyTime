@@ -30,21 +30,6 @@ class FirestoreRepository @Inject constructor(
         tasksCollectionRef.get().await().toObjects(Task::class.java)
     }
 
-    @Suppress("UNCHECKED_CAST")
-    suspend fun getCategories() = performFirestoreOperation {
-        userDocRef.get().await().get("categories") as List<String>
-    }
-
-    suspend fun getTasksByCategory(category: String) = performFirestoreOperation {
-        tasksCollectionRef.whereEqualTo("category", category).get().await()
-            .toObjects(Task::class.java)
-    }
-
-    suspend fun getTasksByPriority(priority: Int) = performFirestoreOperation {
-        tasksCollectionRef.whereEqualTo("priority", priority).get().await()
-            .toObjects(Task::class.java)
-    }
-
     suspend fun getTasksByDate(date: Date) = performFirestoreOperation {
         tasksCollectionRef.whereEqualTo("date", date).get().await()
             .toObjects(Task::class.java)
@@ -56,6 +41,15 @@ class FirestoreRepository @Inject constructor(
 
     suspend fun getUncompletedTasksCount() = performFirestoreOperation {
         tasksCollectionRef.whereEqualTo("completed", false).get().await().size()
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    suspend fun getCategories() = performFirestoreOperation {
+        userDocRef.get().await().get("categories") as List<String>
+    }
+
+    suspend fun updateCategories(categories: List<String>) = performFirestoreOperation {
+        userDocRef.update("categories", categories).await()
     }
 
     private inline fun <T> performFirestoreOperation(operation: () -> T): Result<T> {

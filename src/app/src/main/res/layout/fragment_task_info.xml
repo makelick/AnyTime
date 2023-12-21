@@ -86,13 +86,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
+        android:text="@string/date"
         android:textAlignment="textStart"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@id/date"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/priorityCard"
-        tools:text="Date:" />
+        app:layout_constraintTop_toBottomOf="@id/priorityCard" />
 
     <TextView
         android:id="@+id/date"

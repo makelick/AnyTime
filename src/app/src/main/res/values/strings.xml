@@ -49,6 +49,8 @@
     <string name="restart">restart</string>
     <string name="next">next</string>
     <string name="task_deleted">Task deleted</string>
+    <string name="date">Date:</string>
+    <string name="description">Description</string>
 
     <string-array name="priority_list">
         <item>All priority</item>
