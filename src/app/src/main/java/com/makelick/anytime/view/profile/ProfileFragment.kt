@@ -66,11 +66,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
     }
 
     private fun navigateToCategories() {
-        findNavController().navigate(R.id.action_profileFragment_to_categoriesFragment)
+        findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToCategoriesFragment())
     }
 
     private fun navigateToLogin() {
-        findNavController().navigate(R.id.loginFragment)
+        findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToLoginFragment())
     }
 
     private fun changeMode() {

@@ -1,14 +1,16 @@
 package com.makelick.anytime.model.entity
 
 import com.google.firebase.firestore.DocumentId
+import java.io.Serializable
 import java.util.Date
 
+
 data class Task(
-    @DocumentId val id: String,
-    val isCompleted: Boolean,
-    val title: String,
-    val category: String,
-    val priority: Int,
-    val date: Date,
-    val description: String
-)
+    @DocumentId val id: String? = null,
+    var isCompleted: Boolean = false,
+    val title: String? = null,
+    val category: String? = null,
+    val priority: Int? = null,
+    val date: Date? = null,
+    val description: String? = null
+) : Serializable

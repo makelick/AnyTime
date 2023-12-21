@@ -54,7 +54,15 @@
         android:id="@+id/editTaskFragment"
         android:name="com.makelick.anytime.view.taskedit.EditTaskFragment"
         android:label="fragment_edit_task"
-        tools:layout="@layout/fragment_edit_task" />
+        tools:layout="@layout/fragment_edit_task" >
+        <argument
+            android:name="isCreating"
+            app:argType="boolean" />
+        <argument
+            android:name="task"
+            app:argType="com.makelick.anytime.model.entity.Task"
+            app:nullable="true" />
+    </fragment>
     <fragment
         android:id="@+id/taskInfoFragment"
         android:name="com.makelick.anytime.view.taskinfo.TaskInfoFragment"
@@ -63,6 +71,9 @@
         <action
             android:id="@+id/action_taskInfoFragment_to_editTaskFragment"
             app:destination="@id/editTaskFragment" />
+        <argument
+            android:name="task"
+            app:argType="com.makelick.anytime.model.entity.Task" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"

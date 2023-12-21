@@ -7,86 +7,52 @@ import kotlinx.coroutines.tasks.await
 import java.util.Date
 import javax.inject.Inject
 
-class FirestoreRepository @Inject constructor() {
+class FirestoreRepository @Inject constructor(
+    userId: String
+) {
 
-    private val firestore = Firebase.firestore
+    private val userDocRef = Firebase.firestore.document("users/$userId")
+    private val tasksCollectionRef = userDocRef.collection("tasks")
 
-    suspend fun addTask(userId: String, task: Task): Result<Unit> {
-        return try {
-            firestore.collection("users/$userId/tasks/")
-                .add(task)
-                .await()
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+    suspend fun addTask(task: Task) = performFirestoreOperation {
+        tasksCollectionRef.add(task).await()
     }
 
-    suspend fun updateTask(userId: String, task: Task): Result<Unit> {
-        return try {
-            firestore.document("users/$userId/tasks/${task.id}")
-                .set(task)
-                .await()
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+    suspend fun updateTask(task: Task) = performFirestoreOperation {
+        tasksCollectionRef.document(task.id.toString()).set(task).await()
     }
 
-    suspend fun deleteTask(userId: String, taskId: String): Result<Unit> {
-        return try {
-            firestore.document("users/$userId/tasks/$taskId")
-                .delete()
-                .await()
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+    suspend fun deleteTask(taskId: String) = performFirestoreOperation {
+        tasksCollectionRef.document(taskId).delete().await()
     }
 
-    suspend fun getAllTasks(userId: String): Result<List<Task>> {
-        return try {
-            val tasks = firestore.collection("users/$userId/tasks/")
-                .get()
-                .await()
-            val taskList = tasks.toObjects(Task::class.java)
-            Result.success(taskList)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+    suspend fun getAllTasks() = performFirestoreOperation {
+        tasksCollectionRef.get().await().toObjects(Task::class.java)
     }
 
-    suspend fun getTasksByCategory(userId: String, category: String): Result<List<Task>> {
-        return try {
-            val tasks = firestore.collection("users/$userId/tasks/")
-                .whereEqualTo("category", category)
-                .get()
-                .await()
-            val taskList = tasks.toObjects(Task::class.java)
-            Result.success(taskList)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+    @Suppress("UNCHECKED_CAST")
+    suspend fun getCategories() = performFirestoreOperation {
+        userDocRef.get().await().get("categories") as List<String>
     }
 
-    suspend fun getTasksByPriority(userId: String, priority: Int): Result<List<Task>> {
-        return try {
-            val tasks = firestore.collection("users/$userId/tasks/")
-                .whereEqualTo("priority", priority)
-                .get()
-                .await()
-            val taskList = tasks.toObjects(Task::class.java)
-            Result.success(taskList)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+    suspend fun getTasksByCategory(category: String) = performFirestoreOperation {
+        tasksCollectionRef.whereEqualTo("category", category).get().await()
+            .toObjects(Task::class.java)
     }
 
-    suspend fun getTasksByDate(userId: String, date: Date): Result<List<Task>> {
+    suspend fun getTasksByPriority(priority: Int) = performFirestoreOperation {
+        tasksCollectionRef.whereEqualTo("priority", priority).get().await()
+            .toObjects(Task::class.java)
+    }
+
+    suspend fun getTasksByDate(date: Date) = performFirestoreOperation {
+        tasksCollectionRef.whereEqualTo("date", date).get().await()
+            .toObjects(Task::class.java)
+    }
+
+    private inline fun <T> performFirestoreOperation(operation: () -> T): Result<T> {
         return try {
-            val tasks = firestore.collection("users/$userId/tasks/").whereEqualTo("date", date).get().await()
-            val taskList = tasks.toObjects(Task::class.java)
-            Result.success(taskList)
+            Result.success(operation())
         } catch (e: Exception) {
             Result.failure(e)
         }

@@ -38,4 +38,13 @@
         app:layout_constraintTop_toBottomOf="@id/activeTasksText"
         tools:listitem="@layout/item_calendarlist" />
 
+    <ProgressBar
+        android:id="@+id/tasksLoadingBar"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        app:layout_constraintBottom_toBottomOf="@id/tasksRecyclerView"
+        app:layout_constraintEnd_toEndOf="@id/tasksRecyclerView"
+        app:layout_constraintStart_toStartOf="@id/tasksRecyclerView"
+        app:layout_constraintTop_toTopOf="@id/tasksRecyclerView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
