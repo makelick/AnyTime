@@ -109,6 +109,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/completedTasks"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -148,6 +149,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/uncompletedTasks"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"

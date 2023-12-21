@@ -22,7 +22,7 @@ class TasksViewModel @Inject constructor(
             tasks.emit(emptyList())
             isLoading.value = true
             val result = firestoreRepository.getAllTasks()
-            tasks.emit(result.getOrNull()?.sortedBy { it.isCompleted } ?: emptyList())
+            tasks.emit(result.getOrDefault(emptyList()).sortedBy { it.isCompleted })
             isLoading.value = false
         }
     }

@@ -19,4 +19,10 @@ class TaskInfoViewModel @Inject constructor(
             firestoreRepository.updateTask(task)
         }
     }
+
+    fun deleteTask(task: Task) {
+        viewModelScope.launch {
+            firestoreRepository.deleteTask(task.id.toString())
+        }
+    }
 }

@@ -32,6 +32,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         observeViewModel()
     }
 
+    override fun onStart() {
+        super.onStart()
+        viewModel.loadTasksCount()
+    }
+
     private fun setupUI() {
         with(binding) {
 
@@ -106,6 +111,18 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
                     binding.usernameLayout.isEnabled = false
                     binding.imageText.visibility = View.GONE
                 }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.completedTasksCount.collect {
+                binding.completedTasks.text = it.toString()
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.uncompletedTasksCount.collect {
+                binding.uncompletedTasks.text = it.toString()
             }
         }
 

@@ -50,6 +50,14 @@ class FirestoreRepository @Inject constructor(
             .toObjects(Task::class.java)
     }
 
+    suspend fun getCompletedTasksCount() = performFirestoreOperation {
+        tasksCollectionRef.whereEqualTo("completed", true).get().await().size()
+    }
+
+    suspend fun getUncompletedTasksCount() = performFirestoreOperation {
+        tasksCollectionRef.whereEqualTo("completed", false).get().await().size()
+    }
+
     private inline fun <T> performFirestoreOperation(operation: () -> T): Result<T> {
         return try {
             Result.success(operation())

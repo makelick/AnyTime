@@ -48,4 +48,5 @@
     <string name="start">start</string>
     <string name="restart">restart</string>
     <string name="next">next</string>
+    <string name="task_deleted">Task deleted</string>
 </resources>

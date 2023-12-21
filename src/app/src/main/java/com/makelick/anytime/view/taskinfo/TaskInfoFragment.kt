@@ -2,6 +2,7 @@ package com.makelick.anytime.view.taskinfo
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -32,10 +33,6 @@ class TaskInfoFragment : BaseFragment<FragmentTaskInfoBinding>(FragmentTaskInfoB
                 findNavController().popBackStack()
             }
 
-            editButton.setOnClickListener {
-                navigateToEditTask()
-            }
-
             taskCheckBox.isChecked = task.isCompleted
             taskCheckBox.setOnCheckedChangeListener { _, _ ->
                 viewModel.changeTaskStatus(task)
@@ -61,6 +58,16 @@ class TaskInfoFragment : BaseFragment<FragmentTaskInfoBinding>(FragmentTaskInfoB
             date.text = task.date.toString()
 
             description.text = task.description
+
+            editButton.setOnClickListener {
+                navigateToEditTask()
+            }
+
+            deleteButton.setOnClickListener {
+                viewModel.deleteTask(task)
+                findNavController().popBackStack()
+                Toast.makeText(requireContext(), getString(R.string.task_deleted), Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
