@@ -42,7 +42,6 @@
     <string name="low_priority">Low priority</string>
     <string name="medium_priority">Medium priority</string>
     <string name="high_priority">High priority</string>
-    <string name="underlined"><![CDATA[<u>%s</u>]]></string>
     <string name="pomodoro">Pomodoro</string>
     <string name="stay_focused_on_your_task">Stay focused on your task</string>
     <string name="start">start</string>
@@ -56,6 +55,10 @@
     <string name="create_category_dialog_title">Create category</string>
     <string name="create">Create</string>
     <string name="cancel">Cancel</string>
+    <string name="new_task">New task</string>
+    <string name="editing_task">Editing task</string>
+    <string name="task_saved">Task saved</string>
+    <string name="error_try_again">Error, try again</string>
 
     <string-array name="priority_list">
         <item>All priority</item>

@@ -14,7 +14,8 @@ class FirestoreRepository @Inject constructor(
     private val tasksCollectionRef = userDocRef.collection("tasks")
 
     suspend fun addTask(task: Task) = performFirestoreOperation {
-        tasksCollectionRef.add(task).await()
+        task.id = tasksCollectionRef.document().id
+        updateTask(task)
     }
 
     suspend fun updateTask(task: Task) = performFirestoreOperation {

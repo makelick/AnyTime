@@ -16,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/fragmentTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="70dp"
@@ -83,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="#989898"
+                app:cardBackgroundColor="@color/no_priority"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp">
 
@@ -104,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="#48C63A"
+                app:cardBackgroundColor="@color/low_priority"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp">
 
@@ -134,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="#EABF3D"
+                app:cardBackgroundColor="@color/medium_priority"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp">
 
@@ -155,7 +156,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="#E34545"
+                app:cardBackgroundColor="@color/high_priority"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp">
 
@@ -201,7 +202,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/dateTitle"
         app:layout_constraintTop_toBottomOf="@id/priorityLayout"
-        tools:text="@string/underlined" />
+        tools:text="01.01.2023" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/descriptionLayout"
@@ -235,5 +236,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/loadingBar"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

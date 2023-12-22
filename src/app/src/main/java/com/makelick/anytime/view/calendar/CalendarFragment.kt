@@ -12,6 +12,7 @@ import com.makelick.anytime.view.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -42,7 +43,14 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
             }
 
             calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
-                val stringDate = "$dayOfMonth.${month + 1}.$year"
+
+                val calendar = Calendar.getInstance()
+                calendar.set(year, month, dayOfMonth)
+
+                val stringDate = SimpleDateFormat(
+                    "dd.MM.yyyy",
+                    Locale.getDefault()
+                ).format(calendar.time)
                 viewModel.selectedDate.value = stringDate
                 viewModel.loadTasks(stringDate)
             }

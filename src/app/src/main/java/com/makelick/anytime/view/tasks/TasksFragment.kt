@@ -84,7 +84,8 @@ class TasksFragment : BaseFragment<FragmentTasksBinding>(FragmentTasksBinding::i
     }
 
     private fun navigateToCreateTask() {
-        findNavController().navigate(R.id.action_tasksFragment_to_editTaskFragment)
+        val action = TasksFragmentDirections.actionTasksFragmentToEditTaskFragment(true, null)
+        findNavController().navigate(action)
     }
 
     private fun observeViewModel() {

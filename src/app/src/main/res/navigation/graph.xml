@@ -70,7 +70,9 @@
         tools:layout="@layout/fragment_task_info">
         <action
             android:id="@+id/action_taskInfoFragment_to_editTaskFragment"
-            app:destination="@id/editTaskFragment" />
+            app:destination="@id/editTaskFragment"
+            app:popUpTo="@id/taskInfoFragment"
+            app:popUpToInclusive="true" />
         <argument
             android:name="task"
             app:argType="com.makelick.anytime.model.entity.Task" />

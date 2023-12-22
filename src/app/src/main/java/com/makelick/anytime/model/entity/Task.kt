@@ -5,11 +5,11 @@ import java.io.Serializable
 
 
 data class Task(
-    @DocumentId val id: String? = null,
+    @DocumentId var id: String? = null,
     var isCompleted: Boolean = false,
     val title: String? = null,
     val category: String? = null,
-    val priority: Int? = null,
+    var priority: Int? = null,
     val date: String? = null,
     val description: String? = null
 ) : Serializable
