@@ -2,8 +2,13 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
     <color name="no_priority">#FF808080</color>
     <color name="low_priority">#ADE650</color>
     <color name="medium_priority">#E6AA50</color>
     <color name="high_priority">#E65350</color>
+
+    <color name="pomodoro">#EA8383</color>
+    <color name="short_break">#33CCE6</color>
+    <color name="long_break">#2578DD</color>
 </resources>

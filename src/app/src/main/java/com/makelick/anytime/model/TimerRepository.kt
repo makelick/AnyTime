@@ -1,12 +1,21 @@
 package com.makelick.anytime.model
 
 import android.os.CountDownTimer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class TimerRepository @Inject constructor() {
+class TimerRepository @Inject constructor(
+    private val dataStoreRepository: DataStoreRepository
+) {
+
+    val timerMode = MutableStateFlow("")
+    val timerBreaksCount = MutableStateFlow(0)
 
     private var timer: CountDownTimer? = null
     private var remainingTime = 0L
@@ -14,6 +23,22 @@ class TimerRepository @Inject constructor() {
 
     val isTimerRunning: Boolean
         get() = timer != null
+
+
+    init {
+        CoroutineScope(Dispatchers.IO).launch {
+            timerMode.emit(
+                dataStoreRepository.getFromDataStore(DataStoreRepository.KEY_TIMER_MODE)
+                    .first() ?: KEY_POMODORO
+            )
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            timerBreaksCount.emit(
+                dataStoreRepository.getFromDataStore(DataStoreRepository.KEY_TIMER_BREAKS_COUNT)
+                    .first() ?: 0
+            )
+        }
+    }
 
     fun startTimer(timeInMillis: Long) {
         remainingTime = if (remainingTime == 0L) timeInMillis else remainingTime
@@ -38,7 +63,58 @@ class TimerRepository @Inject constructor() {
     fun stopTimer() {
         timer?.cancel()
         timer = null
-        currentTime.value = 0 // TODO: change to type time
+        currentTime.value = getStartTimeInMillis()
         remainingTime = 0
+    }
+
+    fun nextMode() {
+        CoroutineScope(Dispatchers.IO).launch {
+            if (timerMode.value == KEY_POMODORO) {
+                if (timerBreaksCount.value == 3) {
+                    dataStoreRepository.saveToDataStore(
+                        DataStoreRepository.KEY_TIMER_MODE,
+                        KEY_LONG_BREAK
+                    )
+
+                    dataStoreRepository.saveToDataStore(
+                        DataStoreRepository.KEY_TIMER_BREAKS_COUNT,
+                        0
+                    )
+                    timerMode.value = KEY_LONG_BREAK
+                } else {
+                    dataStoreRepository.saveToDataStore(
+                        DataStoreRepository.KEY_TIMER_MODE,
+                        KEY_SHORT_BREAK
+                    )
+
+                    dataStoreRepository.saveToDataStore(
+                        DataStoreRepository.KEY_TIMER_BREAKS_COUNT,
+                        timerBreaksCount.value + 1
+                    )
+                    timerMode.value = KEY_SHORT_BREAK
+                }
+            } else {
+                dataStoreRepository.saveToDataStore(
+                    DataStoreRepository.KEY_TIMER_MODE,
+                    KEY_POMODORO
+                )
+                timerMode.value = KEY_POMODORO
+            }
+        }
+    }
+
+    fun getStartTimeInMillis(): Long {
+        return when (timerMode.value) {
+            KEY_POMODORO -> 25 * 60 * 1000L
+            KEY_SHORT_BREAK -> 5 * 60 * 1000L
+            KEY_LONG_BREAK -> 15 * 60 * 1000L
+            else -> 0
+        }
+    }
+
+    companion object {
+        const val KEY_POMODORO = "Pomodoro"
+        const val KEY_SHORT_BREAK = "Short Break"
+        const val KEY_LONG_BREAK = "Long Break"
     }
 }

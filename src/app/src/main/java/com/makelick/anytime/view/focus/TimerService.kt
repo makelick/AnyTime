@@ -13,6 +13,7 @@ import com.makelick.anytime.view.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,15 +24,14 @@ class TimerService : Service() {
     lateinit var timerRepository: TimerRepository
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val timeInMillis = intent?.getLongExtra("timeInMillis", 0) ?: 0
 
-        timerRepository.startTimer(timeInMillis)
+        timerRepository.startTimer(timerRepository.getStartTimeInMillis())
         createNotificationChannel()
         CoroutineScope(Dispatchers.Main).launch {
             timerRepository.currentTime.collect {
                 if (it > 0) {
                     val notification = createNotification(
-                        getString(R.string.timer_notification_content, it / 1000)
+                        getString(R.string.timer_notification_content, getStringTime(it))
                     )
                     startForeground(1, notification)
                 } else {
@@ -39,8 +39,11 @@ class TimerService : Service() {
                         getString(R.string.notification_timer_finished),
                         true
                     )
-                    startForeground(1, notification)
-                    // TODO: Start next timer or stop service
+                    getSystemService(NotificationManager::class.java).notify(2, notification)
+                    timerRepository.stopTimer()
+                    timerRepository.nextMode()
+                    delay(1000)
+                    timerRepository.startTimer(timerRepository.getStartTimeInMillis())
                 }
             }
         }
@@ -50,7 +53,16 @@ class TimerService : Service() {
 
     override fun onBind(p0: Intent?) = null
 
-    private fun createNotification(content: String, isFinal: Boolean = false): Notification {
+    private fun getStringTime(time: Long): String {
+        val minutes = (time / 1000) / 60
+        val seconds = (time / 1000) % 60
+        return String.format("%02d:%02d", minutes, seconds)
+    }
+
+    private fun createNotification(
+        content: String,
+        isFinal: Boolean = false
+    ): Notification {
         val pendingIntent = NavDeepLinkBuilder(this)
             .setComponentName(MainActivity::class.java)
             .setGraph(R.navigation.graph)
@@ -58,8 +70,8 @@ class TimerService : Service() {
             .createPendingIntent()
 
 
-        return NotificationCompat.Builder(this, "TIMER_CHANNEL")
-            .setContentTitle("Timer Service") // TODO: change to type title
+        return NotificationCompat.Builder(this, NOTIFICATIONS_CHANNEL_NAME)
+            .setContentTitle(timerRepository.timerMode.value)
             .setContentText(content)
             .setSmallIcon(R.drawable.ic_focus)
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
@@ -71,13 +83,17 @@ class TimerService : Service() {
 
     private fun createNotificationChannel() {
         val channel = NotificationChannel(
-            "TIMER_CHANNEL",
-            "Timer Service",
+            NOTIFICATIONS_CHANNEL_NAME,
+            TimerRepository.KEY_POMODORO,
             NotificationManager.IMPORTANCE_HIGH
         ).apply {
-            description = "Channel for Timer Service"
+            description = getString(R.string.timer_notification_channel_description)
         }
 
         getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
+    }
+
+    companion object {
+        const val NOTIFICATIONS_CHANNEL_NAME = "TIMER_CHANNEL"
     }
 }
