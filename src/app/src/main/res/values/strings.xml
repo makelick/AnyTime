@@ -59,6 +59,8 @@
     <string name="editing_task">Editing task</string>
     <string name="task_saved">Task saved</string>
     <string name="error_try_again">Error, try again</string>
+    <string name="timer_notification_content">Time remaining: %d seconds</string>
+    <string name="notification_timer_finished">Timer finished</string>
 
     <string-array name="priority_list">
         <item>All priority</item>
