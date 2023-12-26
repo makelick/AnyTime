@@ -25,7 +25,7 @@
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_margin="40dp"
-        app:cardBackgroundColor="#EA8383"
+        app:cardBackgroundColor="@color/pomodoro"
         app:cardCornerRadius="125dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,6 +41,19 @@
             android:textStyle="bold|italic"
             tools:text="25:00" />
 
+        <TextView
+            android:id="@+id/countOfBreaks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:visibility="gone"
+            android:alpha="0.7"
+            android:layout_marginTop="60dp"
+            android:textStyle="italic"
+            tools:text="2/4" />
+
     </androidx.cardview.widget.CardView>
 
     <TextView
@@ -50,7 +63,7 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="40dp"
         android:alpha="0.7"
-        android:text="@string/stay_focused_on_your_task"
+        android:text="@string/focus_hint_pomodoro"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="25sp"
@@ -63,7 +76,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_margin="40dp"
-        app:cardBackgroundColor="#EA8383"
+        app:cardBackgroundColor="@color/pomodoro"
         app:cardCornerRadius="125dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

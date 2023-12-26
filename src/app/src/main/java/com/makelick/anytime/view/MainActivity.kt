@@ -51,7 +51,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun navigate(destinationId: Int): Boolean {
         return try {
-            findNavController(R.id.fragment_content_main).navigate(destinationId)
+            findNavController(R.id.fragment_content_main).apply {
+                popBackStack()
+                navigate(destinationId)
+            }
             true
         } catch (e: Exception) {
             false
@@ -66,7 +69,9 @@ class MainActivity : AppCompatActivity() {
                     R.id.tasksFragment,
                     R.id.calendarFragment,
                     R.id.profileFragment
-                )) View.VISIBLE
+                )) {
+                View.VISIBLE
+            }
             else View.GONE
         }
     }
