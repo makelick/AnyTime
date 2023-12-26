@@ -1,8 +1,11 @@
 package com.makelick.anytime.view.focus
 
+import android.Manifest
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.PermissionChecker
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.makelick.anytime.R
@@ -22,6 +25,20 @@ class FocusFragment : BaseFragment<FragmentFocusBinding>(FragmentFocusBinding::i
 
         setupUI()
         observeViewModel()
+        askNotificationPermission()
+    }
+
+    private fun askNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (PermissionChecker.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PermissionChecker.PERMISSION_GRANTED
+            ) {
+                @Suppress("DEPRECATION")
+                requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1)
+            }
+        }
     }
 
     private fun setupUI() {

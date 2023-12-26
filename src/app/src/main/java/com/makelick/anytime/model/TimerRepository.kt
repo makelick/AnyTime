@@ -70,7 +70,7 @@ class TimerRepository @Inject constructor(
     fun nextMode() {
         CoroutineScope(Dispatchers.IO).launch {
             if (timerMode.value == KEY_POMODORO) {
-                if (timerBreaksCount.value == 3) {
+                if (timerBreaksCount.value == 4) {
                     dataStoreRepository.saveToDataStore(
                         DataStoreRepository.KEY_TIMER_MODE,
                         KEY_LONG_BREAK
@@ -81,6 +81,7 @@ class TimerRepository @Inject constructor(
                         0
                     )
                     timerMode.value = KEY_LONG_BREAK
+                    timerBreaksCount.value = 0
                 } else {
                     dataStoreRepository.saveToDataStore(
                         DataStoreRepository.KEY_TIMER_MODE,
@@ -92,6 +93,7 @@ class TimerRepository @Inject constructor(
                         timerBreaksCount.value + 1
                     )
                     timerMode.value = KEY_SHORT_BREAK
+                    timerBreaksCount.value = timerBreaksCount.value + 1
                 }
             } else {
                 dataStoreRepository.saveToDataStore(
