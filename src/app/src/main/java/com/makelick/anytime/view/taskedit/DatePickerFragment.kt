@@ -19,13 +19,15 @@ class DatePickerFragment(
         val selectedDate = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).parse(date)
         calendar.time = selectedDate ?: calendar.time
 
+        calendar.firstDayOfWeek = Calendar.MONDAY
+
         return DatePickerDialog(
             requireContext(),
             this,
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
-        )
+        ).also { it.datePicker.firstDayOfWeek = Calendar.MONDAY }
 
     }
 
