@@ -23,7 +23,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
     private val viewModel: ProfileViewModel by viewModels()
 
     private val pickImageLauncher: ActivityResultLauncher<PickVisualMediaRequest> =
-        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uploadImage(it) }
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) {
+            it?.let { uploadImage(it) }
+        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
