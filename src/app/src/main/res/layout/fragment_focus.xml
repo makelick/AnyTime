@@ -25,7 +25,7 @@
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_margin="40dp"
-        app:cardBackgroundColor="@color/pomodoro"
+        app:cardBackgroundColor="@color/primary"
         app:cardCornerRadius="125dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,6 +38,10 @@
             android:layout_gravity="center"
             android:textColor="@color/black"
             android:textSize="50sp"
+            android:shadowColor="@color/white"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="10"
             android:textStyle="bold|italic"
             tools:text="25:00" />
 
@@ -49,6 +53,10 @@
             android:textColor="@color/black"
             android:textSize="25sp"
             android:visibility="gone"
+            android:shadowColor="@color/white"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="3"
             android:alpha="0.7"
             android:layout_marginTop="60dp"
             android:textStyle="italic"
@@ -76,7 +84,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_margin="40dp"
-        app:cardBackgroundColor="@color/pomodoro"
+        app:cardBackgroundColor="@color/primary"
         app:cardCornerRadius="125dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -87,6 +95,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
+            android:shadowColor="@color/white"
             android:contentDescription="@string/start"
             android:src="@drawable/ic_play" />
 

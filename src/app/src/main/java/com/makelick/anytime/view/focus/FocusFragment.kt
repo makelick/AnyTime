@@ -112,10 +112,10 @@ class FocusFragment : BaseFragment<FragmentFocusBinding>(FragmentFocusBinding::i
 
     private fun getTimerColor(mode: String): Int {
         return when (mode) {
-            TimerRepository.KEY_POMODORO -> resources.getColor(R.color.pomodoro, null)
-            TimerRepository.KEY_SHORT_BREAK -> resources.getColor(R.color.short_break, null)
-            TimerRepository.KEY_LONG_BREAK -> resources.getColor(R.color.long_break, null)
-            else -> resources.getColor(R.color.pomodoro, null)
+            TimerRepository.KEY_POMODORO -> resources.getColor(R.color.primary, null)
+            TimerRepository.KEY_SHORT_BREAK -> resources.getColor(R.color.secondary, null)
+            TimerRepository.KEY_LONG_BREAK -> resources.getColor(R.color.accent, null)
+            else -> resources.getColor(R.color.primary, null)
         }
     }
 

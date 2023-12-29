@@ -48,6 +48,8 @@ class ProfileViewModel @Inject constructor(
                     .getCompletedTasksCount()
                     .getOrDefault(0)
             )
+        }
+        viewModelScope.launch {
             uncompletedTasksCount.emit(
                 firestoreRepository
                     .getUncompletedTasksCount()
