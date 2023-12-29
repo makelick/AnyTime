@@ -16,6 +16,7 @@ class LoginViewModel @Inject constructor(
     private val accountRepository: AccountRepository
 ) : ViewModel() {
 
+    val isLoading = MutableStateFlow(false)
     val isLoginMode = MutableStateFlow(true)
     val result = MutableSharedFlow<Result<Unit>>()
 
@@ -28,19 +29,26 @@ class LoginViewModel @Inject constructor(
 
     fun login(email: String, password: String) {
         viewModelScope.launch {
+            isLoading.value = true
             result.emit(accountRepository.signIn(email, password))
+            isLoading.value = false
         }
     }
 
     fun signUp(email: String, password: String) {
         viewModelScope.launch {
+            isLoading.value = true
             result.emit(accountRepository.signUp(email, password))
+            isLoading.value = false
         }
     }
 
     fun signInWithGoogle(account: GoogleSignInAccount) {
         viewModelScope.launch {
+            isLoading.value = true
             result.emit(accountRepository.signInWithGoogle(account))
+            isLoading.value = false
+
         }
     }
 }

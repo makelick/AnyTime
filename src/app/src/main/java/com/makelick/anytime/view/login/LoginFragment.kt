@@ -57,6 +57,17 @@ class LoginFragment :
         lifecycleScope.launch {
             viewModel.result.collect { handleResult(it) }
         }
+
+        lifecycleScope.launch {
+            viewModel.isLoading.collect {
+                with(binding) {
+                    button.isEnabled = !it
+                    googleSignInButton.isEnabled = !it
+                    changeMode.isEnabled = !it
+                    binding.loadingBar.visibility = if (it) View.VISIBLE else View.GONE
+                }
+            }
+        }
     }
 
     private fun changeMode(isSignIn: Boolean) {
