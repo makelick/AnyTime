@@ -25,6 +25,20 @@ class ProfileViewModel @Inject constructor(
 
     var loadedImageUri: Uri? = null
 
+    init {
+        viewModelScope.launch {
+            firestoreRepository.allTasks.collect {
+                completedTasksCount.emit(
+                    firestoreRepository.allTasks.value.count { it.isCompleted }
+                )
+
+                uncompletedTasksCount.emit(
+                    firestoreRepository.allTasks.value.count { !it.isCompleted }
+                )
+            }
+        }
+    }
+
     fun signOut() {
         accountRepository.signOut()
     }
@@ -38,23 +52,6 @@ class ProfileViewModel @Inject constructor(
         if (user != null && file != null) {
             val result = storageRepository.uploadImage(user.uid, file)
             loadedImageUri = result.getOrNull().takeIf { result.isSuccess }
-        }
-    }
-
-    fun loadTasksCount() {
-        viewModelScope.launch {
-            completedTasksCount.emit(
-                firestoreRepository
-                    .getCompletedTasksCount()
-                    .getOrDefault(0)
-            )
-        }
-        viewModelScope.launch {
-            uncompletedTasksCount.emit(
-                firestoreRepository
-                    .getUncompletedTasksCount()
-                    .getOrDefault(0)
-            )
         }
     }
 }

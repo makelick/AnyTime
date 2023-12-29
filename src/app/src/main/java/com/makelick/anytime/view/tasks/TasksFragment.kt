@@ -27,24 +27,32 @@ class TasksFragment : BaseFragment<FragmentTasksBinding>(FragmentTasksBinding::i
         observeViewModel()
     }
 
-    override fun onStart() {
-        super.onStart()
-        loadTasks()
-    }
-
     private fun setupUI() {
         with(binding) {
 
-            lifecycleScope.launch {
-                spinnerCategory.adapter = ArrayAdapter(
-                    requireContext(),
-                    android.R.layout.simple_spinner_dropdown_item,
-                    viewModel.loadCategories()
-                )
+            spinnerPriority.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    viewModel.selectedPriority.value = spinnerPriority.selectedItem.toString().convertPriorityToInt()
+                    viewModel.loadTasks()
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                    viewModel.selectedPriority.value = -1
+                    viewModel.loadTasks()
+                }
             }
 
-            spinnerPriority.onItemSelectedListener = SpinnerOnItemSelectedListener()
-            spinnerCategory.onItemSelectedListener = SpinnerOnItemSelectedListener()
+            spinnerCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    viewModel.selectedCategory.value = spinnerCategory.selectedItem.toString()
+                    viewModel.loadTasks()
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                    viewModel.selectedCategory.value = "All categories"
+                    viewModel.loadTasks()
+                }
+            }
 
             tasksRecyclerView.apply {
                 adapter = TasksAdapter(viewModel::changeTaskStatus, ::navigateToTaskInfo)
@@ -54,17 +62,6 @@ class TasksFragment : BaseFragment<FragmentTasksBinding>(FragmentTasksBinding::i
             addTaskButton.setOnClickListener {
                 navigateToCreateTask()
             }
-        }
-    }
-
-    private fun loadTasks() {
-        try {
-            viewModel.loadTasks(
-                binding.spinnerPriority.selectedItem.toString().convertPriorityToInt(),
-                binding.spinnerCategory.selectedItem.toString()
-            )
-        } catch (e: Exception) {
-            viewModel.loadTasks(-1, "All categories")
         }
     }
 
@@ -100,16 +97,15 @@ class TasksFragment : BaseFragment<FragmentTasksBinding>(FragmentTasksBinding::i
                 (binding.tasksRecyclerView.adapter as TasksAdapter).submitList(it)
             }
         }
-    }
 
-    inner class SpinnerOnItemSelectedListener : AdapterView.OnItemSelectedListener {
-        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            loadTasks()
+        lifecycleScope.launch {
+            viewModel.categories.collect {
+                binding.spinnerCategory.adapter = ArrayAdapter(
+                    requireContext(),
+                    android.R.layout.simple_spinner_dropdown_item,
+                    it
+                )
+            }
         }
-
-        override fun onNothingSelected(p0: AdapterView<*>?) {
-            loadTasks()
-        }
     }
-
 }

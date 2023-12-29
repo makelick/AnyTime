@@ -15,28 +15,44 @@ class TasksViewModel @Inject constructor(
 ) : ViewModel() {
 
     val isLoading = MutableStateFlow(true)
+    val selectedPriority = MutableStateFlow(-1)
+    val selectedCategory = MutableStateFlow("All categories")
+
     val tasks = MutableStateFlow<List<Task>>(emptyList())
+    val categories = MutableStateFlow<List<String>>(emptyList())
 
-    fun loadTasks(priority: Int, category: String) {
+    init {
         viewModelScope.launch {
-            tasks.emit(emptyList())
-            isLoading.value = true
-            var result = firestoreRepository.getAllTasks().getOrDefault(emptyList())
-            if (priority != -1) {
-                result = result.filter { it.priority == priority }
+            firestoreRepository.allTasks.collect {
+                loadTasks()
             }
-            if (category != "All categories") {
-                result = result.filter { it.category == category }
-            }
+        }
 
-            tasks.emit(result.sortedBy { it.isCompleted })
+        viewModelScope.launch {
+            firestoreRepository.categories.collect {
+                categories.value = loadCategories()
+            }
+        }
+    }
+
+    fun loadTasks() {
+        viewModelScope.launch {
+            tasks.emit(filterTasks(firestoreRepository.allTasks.value))
             isLoading.value = false
         }
     }
 
-    suspend fun loadCategories(): List<String> {
+    private fun filterTasks(tasks: List<Task>): List<Task> {
+        return tasks.filter { task ->
+            (selectedPriority.value == -1 || task.priority == selectedPriority.value) &&
+                    (selectedCategory.value == "All categories" || task.category == selectedCategory.value)
+
+        }.sortedBy { it.isCompleted }
+    }
+
+    private fun loadCategories(): List<String> {
         val result = mutableListOf("All categories")
-        result.addAll(firestoreRepository.getCategories().getOrDefault(emptyList()))
+        result.addAll(firestoreRepository.categories.value)
         return result
     }
 

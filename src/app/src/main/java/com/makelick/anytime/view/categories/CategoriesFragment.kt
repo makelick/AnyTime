@@ -28,11 +28,6 @@ class CategoriesFragment :
         observeViewModel()
     }
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.loadCategories()
-    }
-
     private fun setupUI() {
         with(binding) {
 
@@ -45,7 +40,17 @@ class CategoriesFragment :
             }
 
             categoriesRecyclerView.apply {
-                adapter = CategoriesAdapter(viewModel::deleteCategory)
+                adapter = CategoriesAdapter {categoryName ->
+                    lifecycleScope.launch {
+                        if (!viewModel.deleteCategory(categoryName)) {
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.error_try_again),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
                 layoutManager = LinearLayoutManager(requireContext())
             }
         }
@@ -60,12 +65,21 @@ class CategoriesFragment :
             .setPositiveButton(getString(R.string.create)) { _, _ ->
                 val categoryName = dialogView.name.text.toString()
                 if (categoryName.isNotBlank()) {
-                    viewModel.addCategory(categoryName)
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.category_created_message, categoryName),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    lifecycleScope.launch {
+                        if (viewModel.addCategory(categoryName)) {
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.category_created_message, categoryName),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.error_try_again),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
                 } else {
                     Toast.makeText(
                         requireContext(),

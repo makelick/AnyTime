@@ -26,15 +26,21 @@ class CalendarViewModel @Inject constructor(
         ).format(Calendar.getInstance().time)
     )
 
+    init {
+        viewModelScope.launch {
+            firestoreRepository.allTasks.collect {
+                loadTasks(selectedDate.value)
+            }
+        }
+    }
+
     fun loadTasks(date: String) {
         viewModelScope.launch {
-            tasks.emit(emptyList())
             isLoading.value = true
             tasks.emit(
-                firestoreRepository.getUncompletedTasksByDate(date).getOrDefault(emptyList())
+                firestoreRepository.allTasks.value.filter { it.date == date && !it.isCompleted }
             )
             isLoading.value = false
         }
     }
-
 }

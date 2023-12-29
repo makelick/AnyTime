@@ -34,11 +34,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         observeViewModel()
     }
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.loadTasksCount()
-    }
-
     private fun setupUI() {
         with(binding) {
 

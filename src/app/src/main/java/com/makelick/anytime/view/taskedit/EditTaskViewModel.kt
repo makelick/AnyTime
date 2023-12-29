@@ -18,6 +18,7 @@ constructor(
 
     val isLoading = MutableStateFlow(false)
     val result = MutableSharedFlow<Boolean>()
+    val categories = firestoreRepository.categories
 
     fun addTask(task: Task) {
         viewModelScope.launch {
@@ -35,8 +36,4 @@ constructor(
             isLoading.value = false
         }
     }
-
-    suspend fun loadCategories() =
-        firestoreRepository.getCategories().getOrDefault(emptyList())
-
 }

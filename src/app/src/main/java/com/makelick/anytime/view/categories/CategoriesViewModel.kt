@@ -1,11 +1,8 @@
 package com.makelick.anytime.view.categories
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.makelick.anytime.model.FirestoreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -14,29 +11,17 @@ class CategoriesViewModel @Inject constructor(
     private val firestoreRepository: FirestoreRepository
 ) : ViewModel() {
 
-    val categories = MutableStateFlow<List<String>>(emptyList())
+    val categories = firestoreRepository.categories
 
-    fun loadCategories() {
-        viewModelScope.launch {
-            categories.emit(firestoreRepository.getCategories().getOrDefault(emptyList()))
-        }
+    suspend fun deleteCategory(category: String): Boolean {
+        val newCategories = categories.value.toMutableList()
+        newCategories.remove(category)
+        return firestoreRepository.updateCategories(newCategories).isSuccess
     }
 
-    fun deleteCategory(category: String) {
-        viewModelScope.launch {
-            val newCategories = categories.value.toMutableList()
-            newCategories.remove(category)
-            firestoreRepository.updateCategories(newCategories)
-            categories.emit(newCategories)
-        }
-    }
-
-    fun addCategory(category: String) {
-        viewModelScope.launch {
-            val newCategories = categories.value.toMutableList()
-            newCategories.add(category)
-            firestoreRepository.updateCategories(newCategories)
-            categories.emit(newCategories)
-        }
+    suspend fun addCategory(category: String): Boolean {
+        val newCategories = categories.value.toMutableList()
+        newCategories.add(category)
+        return firestoreRepository.updateCategories(newCategories).isSuccess
     }
 }

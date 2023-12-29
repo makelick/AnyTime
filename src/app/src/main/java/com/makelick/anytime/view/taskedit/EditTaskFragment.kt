@@ -50,22 +50,7 @@ class EditTaskFragment : BaseFragment<FragmentEditTaskBinding>(FragmentEditTaskB
                 if (isCreating) getString(R.string.new_task)
                 else getString(R.string.editing_task)
 
-
             name.setText(task.title)
-
-            lifecycleScope.launch {
-                val adapter = ArrayAdapter(
-                    requireContext(),
-                    android.R.layout.simple_spinner_dropdown_item,
-                    viewModel.loadCategories()
-                )
-                spinnerCategory.adapter = adapter
-                if (task.category != null) {
-                    val position = adapter.getPosition(task.category)
-                    spinnerCategory.setSelection(position)
-                }
-            }
-
 
             val priorityButtons =
                 listOf(noPriorityCard, lowPriorityCard, mediumPriorityCard, highPriorityCard)
@@ -105,7 +90,7 @@ class EditTaskFragment : BaseFragment<FragmentEditTaskBinding>(FragmentEditTaskB
                     isCompleted = task.isCompleted,
                     title = name.text.toString(),
                     priority = task.priority,
-                    category = spinnerCategory.selectedItem.toString(),
+                    category = (spinnerCategory.selectedItem ?: null).toString(),
                     date = date.text.toString(),
                     description = description.text.toString()
                 )
@@ -170,6 +155,21 @@ class EditTaskFragment : BaseFragment<FragmentEditTaskBinding>(FragmentEditTaskB
 
                         loadingBar.visibility = View.GONE
                     }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.categories.collect {
+                val adapter = ArrayAdapter(
+                    requireContext(),
+                    android.R.layout.simple_spinner_dropdown_item,
+                    it
+                )
+                binding.spinnerCategory.adapter = adapter
+                if (task.category != null) {
+                    val position = adapter.getPosition(task.category)
+                    binding.spinnerCategory.setSelection(position)
                 }
             }
         }
