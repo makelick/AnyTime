@@ -5,7 +5,9 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class StorageRepository @Inject constructor() {
 
     suspend fun uploadImage(userId: String, imageUri: Uri): Result<Uri> {

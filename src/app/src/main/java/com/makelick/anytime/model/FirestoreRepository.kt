@@ -6,7 +6,9 @@ import com.makelick.anytime.model.entity.Task
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class FirestoreRepository @Inject constructor(
     userId: String
 ) {
@@ -19,16 +21,12 @@ class FirestoreRepository @Inject constructor(
 
     init {
         tasksCollectionRef.addSnapshotListener { value, error ->
-            if (error != null) {
-                throw error
-            }
+            if (error != null) return@addSnapshotListener
             allTasks.value = value?.toObjects(Task::class.java) ?: emptyList()
         }
 
         userDocRef.addSnapshotListener { value, error ->
-            if (error != null) {
-                throw error
-            }
+            if (error != null) return@addSnapshotListener
 
             categories.value =
                 (value?.get("categories") as? List<*>)?.map { it.toString() } ?: emptyList()

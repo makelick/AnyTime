@@ -65,6 +65,8 @@
     <string name="notification_timer_finished">Timer finished</string>
     <string name="timer_notification_channel_description">Channel for Timer Service</string>
     <string name="focus_count_of_breaks">%d/4</string>
+    <string name="there_are_no_uncompleted_tasks">There are no uncompleted tasks</string>
+    <string name="there_are_no_tasks">There are no tasks :(</string>
 
     <string-array name="priority_list">
         <item>All priority</item>

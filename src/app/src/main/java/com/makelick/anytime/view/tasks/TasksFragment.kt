@@ -95,6 +95,7 @@ class TasksFragment : BaseFragment<FragmentTasksBinding>(FragmentTasksBinding::i
         lifecycleScope.launch {
             viewModel.tasks.collect {
                 (binding.tasksRecyclerView.adapter as TasksAdapter).submitList(it)
+                binding.emptyTasksText.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
             }
         }
 

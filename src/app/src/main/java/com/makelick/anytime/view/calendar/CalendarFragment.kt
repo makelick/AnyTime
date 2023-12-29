@@ -74,6 +74,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
         lifecycleScope.launch {
             viewModel.tasks.collect {
                 (binding.tasksRecyclerView.adapter as CalendarAdapter).submitList(it)
+                binding.emptyTasksText.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
             }
         }
 
