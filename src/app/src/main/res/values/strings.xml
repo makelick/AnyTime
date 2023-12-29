@@ -70,6 +70,7 @@
     <string name="sign_out_message">Do you really want to sign out of your account?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="category_last_message">You cannot delete all categories</string>
 
     <string-array name="priority_list">
         <item>All priority</item>

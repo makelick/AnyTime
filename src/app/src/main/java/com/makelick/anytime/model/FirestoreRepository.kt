@@ -28,8 +28,12 @@ class FirestoreRepository @Inject constructor(
         userDocRef.addSnapshotListener { value, error ->
             if (error != null) return@addSnapshotListener
 
-            categories.value =
-                (value?.get("categories") as? List<*>)?.map { it.toString() } ?: emptyList()
+            if (value?.exists() == true) {
+                categories.value =
+                    (value.get("categories") as? List<*>)?.map { it.toString() } ?: emptyList()
+            } else {
+                userDocRef.set(mapOf("categories" to listOf("Personal", "Work")))
+            }
         }
     }
 
