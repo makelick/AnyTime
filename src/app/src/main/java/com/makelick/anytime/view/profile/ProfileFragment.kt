@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
 import coil.transform.CircleCropTransformation
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.makelick.anytime.R
 import com.makelick.anytime.databinding.FragmentProfileBinding
 import com.makelick.anytime.view.BaseFragment
@@ -61,8 +62,17 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
             }
 
             buttonLogOut.setOnClickListener {
-                viewModel.signOut()
-                navigateToLogin()
+                MaterialAlertDialogBuilder(requireContext()).apply {
+                    setTitle(getString(R.string.sign_out))
+                    setMessage(getString(R.string.sign_out_message))
+                    setPositiveButton(getString(R.string.yes)) { dialog, _ ->
+                        viewModel.signOut()
+                        navigateToLogin()
+                        dialog.dismiss()
+                    }
+                    setNegativeButton(getString(R.string.no)) { dialog, _ -> dialog.dismiss() }
+                    show()
+                }
             }
         }
     }

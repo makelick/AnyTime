@@ -67,6 +67,9 @@
     <string name="focus_count_of_breaks">%d/4</string>
     <string name="there_are_no_uncompleted_tasks">There are no uncompleted tasks</string>
     <string name="there_are_no_tasks">There are no tasks :(</string>
+    <string name="sign_out_message">Do you really want to sign out of your account?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <string-array name="priority_list">
         <item>All priority</item>

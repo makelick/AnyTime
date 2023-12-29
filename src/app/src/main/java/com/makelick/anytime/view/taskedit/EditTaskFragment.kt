@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.makelick.anytime.R
 import com.makelick.anytime.databinding.FragmentEditTaskBinding
 import com.makelick.anytime.model.entity.Task
@@ -19,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 import kotlin.properties.Delegates
 
@@ -64,18 +66,23 @@ class EditTaskFragment : BaseFragment<FragmentEditTaskBinding>(FragmentEditTaskB
 
             date.text = getUnderlinedText(task.date ?: getCurrentDate())
             date.setOnClickListener {
-                DatePickerFragment(
-                    date.text.toString()
-                ) { day, month, year ->
-                    val calendar = Calendar.getInstance()
-                    calendar.set(year, month, day)
+                val calendar = Calendar.getInstance()
+
+                val datePicker = MaterialDatePicker.Builder.datePicker()
+                    .setSelection(calendar.timeInMillis)
+                    .build()
+
+                datePicker.addOnPositiveButtonClickListener {
+                    val selectedDate = Date(it)
                     date.text = getUnderlinedText(
                         SimpleDateFormat(
                             "dd.MM.yyyy",
                             Locale.getDefault()
-                        ).format(calendar.time)
+                        ).format(selectedDate.time)
                     )
-                }.show(childFragmentManager, null)
+                }
+
+                datePicker.show(childFragmentManager, datePicker.toString())
             }
 
             description.setText(task.description)

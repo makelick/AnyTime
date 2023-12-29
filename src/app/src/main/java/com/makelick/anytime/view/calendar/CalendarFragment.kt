@@ -42,8 +42,6 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
                 layoutManager = LinearLayoutManager(requireContext())
             }
 
-            calendarView.firstDayOfWeek = Calendar.MONDAY
-
             calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
 
                 val calendar = Calendar.getInstance()
