@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.makelick.anytime.R
 import com.makelick.anytime.databinding.FragmentFocusBinding
-import com.makelick.anytime.model.TimerRepository
+import com.makelick.anytime.model.entity.PomodoroMode
 import com.makelick.anytime.view.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -43,19 +43,12 @@ class FocusFragment : BaseFragment<FragmentFocusBinding>(FragmentFocusBinding::i
 
     private fun setupUI() {
 
-        if (viewModel.isTimerRunning) {
-            binding.iconPlay.setImageResource(R.drawable.ic_pause)
-        } else {
-            binding.iconPlay.setImageResource(R.drawable.ic_play)
-        }
-        binding.time.text = getStringTime(viewModel.currentTime.value)
-
         binding.playButton.setOnClickListener {
-            if (viewModel.isTimerRunning) {
+            if (viewModel.isTimerRunning.value) {
+                context?.stopService(Intent(context, TimerService::class.java))
                 viewModel.pauseTimer()
                 binding.iconPlay.setImageResource(R.drawable.ic_play)
             } else {
-                context?.stopService(Intent(context, TimerService::class.java))
                 context?.startService(Intent(context, TimerService::class.java))
                 binding.iconPlay.setImageResource(R.drawable.ic_pause)
             }
@@ -67,19 +60,30 @@ class FocusFragment : BaseFragment<FragmentFocusBinding>(FragmentFocusBinding::i
         }
 
         binding.nextButton.setOnClickListener {
-            stopTimer()
             viewModel.nextMode()
+            stopTimer()
             context?.startService(Intent(context, TimerService::class.java))
             binding.iconPlay.setImageResource(R.drawable.ic_pause)
         }
     }
 
     private fun stopTimer() {
-        viewModel.stopTimer()
         context?.stopService(Intent(context, TimerService::class.java))
+        viewModel.stopTimer()
     }
 
     private fun observeViewModel() {
+
+        lifecycleScope.launch {
+            viewModel.isTimerRunning.collect {
+                if (it) {
+                    binding.iconPlay.setImageResource(R.drawable.ic_pause)
+                } else {
+                    binding.iconPlay.setImageResource(R.drawable.ic_play)
+                }
+            }
+        }
+
         lifecycleScope.launch {
             viewModel.currentTime.collect {
                 binding.time.text = getStringTime(it)
@@ -89,14 +93,13 @@ class FocusFragment : BaseFragment<FragmentFocusBinding>(FragmentFocusBinding::i
         lifecycleScope.launch {
             viewModel.timerMode.collect {
                 with(binding) {
-                    title.text = it
-                    time.text = getStringTime(viewModel.getStartTimeInMillis())
+                    title.text = it.title
                     hint.text = getHint(it)
 
                     timeCard.setCardBackgroundColor(getTimerColor(it))
                     playButton.setCardBackgroundColor(getTimerColor(it))
 
-                    if (it == TimerRepository.KEY_POMODORO) {
+                    if (it == PomodoroMode.POMODORO) {
                         countOfBreaks.text = getString(
                             R.string.focus_count_of_breaks,
                             viewModel.timerBreaksCount.value
@@ -110,21 +113,19 @@ class FocusFragment : BaseFragment<FragmentFocusBinding>(FragmentFocusBinding::i
         }
     }
 
-    private fun getTimerColor(mode: String): Int {
+    private fun getTimerColor(mode: PomodoroMode): Int {
         return when (mode) {
-            TimerRepository.KEY_POMODORO -> resources.getColor(R.color.primary, null)
-            TimerRepository.KEY_SHORT_BREAK -> resources.getColor(R.color.secondary, null)
-            TimerRepository.KEY_LONG_BREAK -> resources.getColor(R.color.accent, null)
-            else -> resources.getColor(R.color.primary, null)
+            PomodoroMode.POMODORO -> resources.getColor(R.color.primary, null)
+            PomodoroMode.SHORT_BREAK -> resources.getColor(R.color.secondary, null)
+            PomodoroMode.LONG_BREAK -> resources.getColor(R.color.accent, null)
         }
     }
 
-    private fun getHint(mode: String): String {
+    private fun getHint(mode: PomodoroMode): String {
         return when (mode) {
-            TimerRepository.KEY_POMODORO -> getString(R.string.focus_hint_pomodoro)
-            TimerRepository.KEY_SHORT_BREAK -> getString(R.string.focus_hint_short_break)
-            TimerRepository.KEY_LONG_BREAK -> getString(R.string.focus_hint_long_break)
-            else -> ""
+            PomodoroMode.POMODORO -> getString(R.string.focus_hint_pomodoro)
+            PomodoroMode.SHORT_BREAK -> getString(R.string.focus_hint_short_break)
+            PomodoroMode.LONG_BREAK -> getString(R.string.focus_hint_long_break)
         }
     }
 

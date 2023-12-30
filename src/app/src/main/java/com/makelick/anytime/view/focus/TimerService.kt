@@ -25,7 +25,7 @@ class TimerService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
-        timerRepository.startTimer(timerRepository.getStartTimeInMillis())
+        timerRepository.startTimer(timerRepository.timerMode.value.timeInMillis)
         createNotificationChannel()
         CoroutineScope(Dispatchers.Main).launch {
             timerRepository.currentTime.collect {
@@ -40,10 +40,10 @@ class TimerService : Service() {
                         true
                     )
                     getSystemService(NotificationManager::class.java).notify(2, notification)
-                    timerRepository.stopTimer()
                     timerRepository.nextMode()
+                    timerRepository.stopTimer()
                     delay(1000)
-                    timerRepository.startTimer(timerRepository.getStartTimeInMillis())
+                    timerRepository.startTimer(timerRepository.timerMode.value.timeInMillis)
                 }
             }
         }
@@ -71,7 +71,7 @@ class TimerService : Service() {
 
 
         return NotificationCompat.Builder(this, NOTIFICATIONS_CHANNEL_NAME)
-            .setContentTitle(timerRepository.timerMode.value)
+            .setContentTitle(timerRepository.timerMode.value.title)
             .setContentText(content)
             .setSmallIcon(R.drawable.ic_focus)
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)

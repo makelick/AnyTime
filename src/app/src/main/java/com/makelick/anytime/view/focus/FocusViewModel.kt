@@ -12,22 +12,19 @@ class FocusViewModel @Inject constructor(
 
     val timerMode = timerRepository.timerMode
     val timerBreaksCount = timerRepository.timerBreaksCount
+    val isTimerRunning  = timerRepository.isTimerRunning
     val currentTime = timerRepository.currentTime
-    val isTimerRunning: Boolean
-        get() = timerRepository.isTimerRunning
-
-    fun stopTimer() {
-        timerRepository.stopTimer()
-    }
 
     fun pauseTimer() {
         timerRepository.pauseTimer()
     }
 
+    fun stopTimer() {
+        timerRepository.stopTimer()
+    }
+
     fun nextMode() {
         timerRepository.nextMode()
     }
-
-    fun getStartTimeInMillis() = timerRepository.getStartTimeInMillis()
 
 }

@@ -1,6 +1,7 @@
 package com.makelick.anytime.model
 
 import android.os.CountDownTimer
+import com.makelick.anytime.model.entity.PomodoroMode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,23 +15,22 @@ class TimerRepository @Inject constructor(
     private val dataStoreRepository: DataStoreRepository
 ) {
 
-    val timerMode = MutableStateFlow("")
-    val timerBreaksCount = MutableStateFlow(0)
-
     private var timer: CountDownTimer? = null
-    private var remainingTime = 0L
-    val currentTime = MutableStateFlow<Long>(0)
 
-    val isTimerRunning: Boolean
-        get() = timer != null
+    val timerMode = MutableStateFlow(PomodoroMode.POMODORO)
+    val timerBreaksCount = MutableStateFlow(0)
+    val isTimerRunning = MutableStateFlow(timer != null)
+    val currentTime = MutableStateFlow<Long>(0)
 
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
             timerMode.emit(
+                getModeByTitle(
                 dataStoreRepository.getFromDataStore(DataStoreRepository.KEY_TIMER_MODE)
-                    .first() ?: KEY_POMODORO
+                    .first() ?: PomodoroMode.POMODORO.title)
             )
+            currentTime.value = timerMode.value.timeInMillis
         }
         CoroutineScope(Dispatchers.IO).launch {
             timerBreaksCount.emit(
@@ -41,58 +41,57 @@ class TimerRepository @Inject constructor(
     }
 
     fun startTimer(timeInMillis: Long) {
-        remainingTime = if (remainingTime == 0L) timeInMillis else remainingTime
-        timer = object : CountDownTimer(remainingTime, 1000) {
+        isTimerRunning.value = true
+        timer = object : CountDownTimer(timeInMillis, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                remainingTime = millisUntilFinished
                 currentTime.value = millisUntilFinished
             }
 
             override fun onFinish() {
-                remainingTime = 0
                 currentTime.value = 0
             }
         }.start()
     }
 
     fun pauseTimer() {
+        isTimerRunning.value = false
         timer?.cancel()
         timer = null
     }
 
     fun stopTimer() {
+        isTimerRunning.value = false
         timer?.cancel()
         timer = null
-        currentTime.value = getStartTimeInMillis()
-        remainingTime = 0
+        currentTime.value = timerMode.value.timeInMillis
     }
 
     fun nextMode() {
         CoroutineScope(Dispatchers.IO).launch {
-            if (timerMode.value == KEY_POMODORO) {
+            if (timerMode.value.title == KEY_POMODORO) {
                 if (timerBreaksCount.value == 4) {
                     dataStoreRepository.saveToDataStore(
                         DataStoreRepository.KEY_TIMER_MODE,
                         KEY_LONG_BREAK
                     )
+                    timerMode.value = PomodoroMode.LONG_BREAK
 
                     dataStoreRepository.saveToDataStore(
                         DataStoreRepository.KEY_TIMER_BREAKS_COUNT,
                         0
                     )
-                    timerMode.value = KEY_LONG_BREAK
                     timerBreaksCount.value = 0
                 } else {
                     dataStoreRepository.saveToDataStore(
                         DataStoreRepository.KEY_TIMER_MODE,
                         KEY_SHORT_BREAK
                     )
+                    timerMode.value = PomodoroMode.SHORT_BREAK
 
                     dataStoreRepository.saveToDataStore(
                         DataStoreRepository.KEY_TIMER_BREAKS_COUNT,
                         timerBreaksCount.value + 1
                     )
-                    timerMode.value = KEY_SHORT_BREAK
                     timerBreaksCount.value = timerBreaksCount.value + 1
                 }
             } else {
@@ -100,17 +99,18 @@ class TimerRepository @Inject constructor(
                     DataStoreRepository.KEY_TIMER_MODE,
                     KEY_POMODORO
                 )
-                timerMode.value = KEY_POMODORO
+                timerMode.value = PomodoroMode.POMODORO
             }
+            currentTime.value = timerMode.value.timeInMillis
         }
     }
 
-    fun getStartTimeInMillis(): Long {
-        return when (timerMode.value) {
-            KEY_POMODORO -> 25 * 60 * 1000L
-            KEY_SHORT_BREAK -> 5 * 60 * 1000L
-            KEY_LONG_BREAK -> 15 * 60 * 1000L
-            else -> 0
+    private fun getModeByTitle(title: String): PomodoroMode {
+        return when (title) {
+            PomodoroMode.POMODORO.title -> PomodoroMode.POMODORO
+            PomodoroMode.SHORT_BREAK.title -> PomodoroMode.SHORT_BREAK
+            PomodoroMode.LONG_BREAK.title -> PomodoroMode.LONG_BREAK
+            else -> PomodoroMode.POMODORO
         }
     }
 
