@@ -92,10 +92,18 @@ class EditTaskFragment : BaseFragment<FragmentEditTaskBinding>(FragmentEditTaskB
                 else getString(R.string.save)
 
             editButton.setOnClickListener {
+                val title = name.text.toString().trim()
+                root.clearFocus()
+
+                if (title.isBlank()) {
+                    binding.nameLayout.error = getString(R.string.error_empty)
+                    return@setOnClickListener
+                }
+
                 val newTask = Task(
                     id = task.id,
                     isCompleted = task.isCompleted,
-                    title = name.text.toString(),
+                    title = title,
                     priority = task.priority,
                     category = (spinnerCategory.selectedItem ?: null).toString(),
                     date = date.text.toString(),
@@ -105,6 +113,10 @@ class EditTaskFragment : BaseFragment<FragmentEditTaskBinding>(FragmentEditTaskB
                 if (isCreating) viewModel.addTask(newTask)
                 else viewModel.updateTask(newTask)
 
+            }
+
+            name.onFocusChangeListener = View.OnFocusChangeListener { _, _ ->
+                nameLayout.error = null
             }
 
         }

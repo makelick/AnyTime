@@ -45,7 +45,7 @@ class CategoriesFragment :
                 viewModel.deleteCategory(categoryName) -> null
                 else -> R.string.error_try_again
             }
-            message?.let { showToast(it) }
+            message?.let { showToast(getString(it)) }
         }
     }
 
@@ -54,28 +54,32 @@ class CategoriesFragment :
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.create_category_dialog_title)
             .setView(dialogView.root)
-            .setPositiveButton(R.string.create) { _, _ -> handleCreate(dialogView.name.text.toString()) }
+            .setPositiveButton(R.string.create) { _, _ ->
+                handleCreate(
+                    dialogView.name.text.toString().trim()
+                )
+            }
             .setNegativeButton(R.string.cancel) { dialog, _ -> dialog.cancel() }
             .show()
     }
 
     private fun handleCreate(categoryName: String) {
-        if (categoryName.isNotBlank()) {
-            lifecycleScope.launch {
+        when {
+            categoryName.isBlank() -> showToast(getString(R.string.category_name_empty_error_message))
+            categoryName in viewModel.categories.value -> showToast(getString(R.string.category_already_exists_error_message))
+            else -> lifecycleScope.launch {
                 val message = if (viewModel.addCategory(categoryName)) {
-                    R.string.category_created_message
+                    getString(R.string.category_created_message, categoryName)
                 } else {
-                    R.string.error_try_again
+                    getString(R.string.error_try_again)
                 }
-                showToast(message, categoryName)
+                showToast(message)
             }
-        } else {
-            showToast(R.string.category_name_empty_error_message)
         }
     }
 
-    private fun showToast(message: Int, categoryName: String = "") {
-        Toast.makeText(requireContext(), getString(message, categoryName), Toast.LENGTH_SHORT).show()
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun observeViewModel() {

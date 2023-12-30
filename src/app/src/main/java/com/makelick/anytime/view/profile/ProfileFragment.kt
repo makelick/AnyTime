@@ -47,7 +47,14 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
                 username.setText(viewModel.user?.displayName)
             }
 
-            edit.setOnClickListener { changeMode() }
+            edit.setOnClickListener {
+                root.clearFocus()
+                changeMode()
+            }
+
+            username.onFocusChangeListener = View.OnFocusChangeListener { _, _ ->
+                usernameLayout.error = null
+            }
 
             profileImage.setOnClickListener {
                 if (viewModel.isEditMode.value) {
@@ -87,7 +94,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     private fun changeMode() {
         if (viewModel.isEditMode.value) {
-            viewModel.applyProfileChanges(binding.username.text.toString())
+            if (binding.username.text.toString().isBlank()) {
+                binding.usernameLayout.error = getString(R.string.error_empty)
+            } else {
+                viewModel.applyProfileChanges(binding.username.text.toString())
+            }
         } else {
             viewModel.isEditMode.value = true
         }

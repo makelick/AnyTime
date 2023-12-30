@@ -146,11 +146,13 @@ class LoginFragment :
 
             button.setOnClickListener {
                 clearErrors()
+                root.clearFocus()
                 attemptLogin()
             }
 
             googleSignInButton.setOnClickListener {
                 signInWithGoogle()
+                root.clearFocus()
             }
         }
     }

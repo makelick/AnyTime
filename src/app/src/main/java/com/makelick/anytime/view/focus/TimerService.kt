@@ -9,6 +9,7 @@ import androidx.core.app.NotificationCompat
 import androidx.navigation.NavDeepLinkBuilder
 import com.makelick.anytime.R
 import com.makelick.anytime.model.TimerRepository
+import com.makelick.anytime.model.entity.PomodoroMode
 import com.makelick.anytime.view.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -84,7 +85,7 @@ class TimerService : Service() {
     private fun createNotificationChannel() {
         val channel = NotificationChannel(
             NOTIFICATIONS_CHANNEL_NAME,
-            TimerRepository.KEY_POMODORO,
+            PomodoroMode.POMODORO.title,
             NotificationManager.IMPORTANCE_HIGH
         ).apply {
             description = getString(R.string.timer_notification_channel_description)

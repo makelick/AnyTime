@@ -71,6 +71,8 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="category_last_message">You cannot delete all categories</string>
+    <string name="error_empty">Cannot be empty</string>
+    <string name="category_already_exists_error_message">A category with the same name already exists</string>
 
     <string-array name="priority_list">
         <item>All priority</item>

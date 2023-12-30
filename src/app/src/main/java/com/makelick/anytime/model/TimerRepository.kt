@@ -68,11 +68,11 @@ class TimerRepository @Inject constructor(
 
     fun nextMode() {
         CoroutineScope(Dispatchers.IO).launch {
-            if (timerMode.value.title == KEY_POMODORO) {
+            if (timerMode.value == PomodoroMode.POMODORO) {
                 if (timerBreaksCount.value == 4) {
                     dataStoreRepository.saveToDataStore(
                         DataStoreRepository.KEY_TIMER_MODE,
-                        KEY_LONG_BREAK
+                        PomodoroMode.LONG_BREAK.title
                     )
                     timerMode.value = PomodoroMode.LONG_BREAK
 
@@ -84,7 +84,7 @@ class TimerRepository @Inject constructor(
                 } else {
                     dataStoreRepository.saveToDataStore(
                         DataStoreRepository.KEY_TIMER_MODE,
-                        KEY_SHORT_BREAK
+                        PomodoroMode.SHORT_BREAK.title
                     )
                     timerMode.value = PomodoroMode.SHORT_BREAK
 
@@ -97,7 +97,7 @@ class TimerRepository @Inject constructor(
             } else {
                 dataStoreRepository.saveToDataStore(
                     DataStoreRepository.KEY_TIMER_MODE,
-                    KEY_POMODORO
+                    PomodoroMode.POMODORO.title
                 )
                 timerMode.value = PomodoroMode.POMODORO
             }
@@ -112,11 +112,5 @@ class TimerRepository @Inject constructor(
             PomodoroMode.LONG_BREAK.title -> PomodoroMode.LONG_BREAK
             else -> PomodoroMode.POMODORO
         }
-    }
-
-    companion object {
-        const val KEY_POMODORO = "Pomodoro"
-        const val KEY_SHORT_BREAK = "Short Break"
-        const val KEY_LONG_BREAK = "Long Break"
     }
 }
