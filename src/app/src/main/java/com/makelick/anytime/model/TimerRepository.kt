@@ -42,7 +42,7 @@ class TimerRepository @Inject constructor(
 
     fun startTimer(timeInMillis: Long) {
         isTimerRunning.value = true
-        timer = object : CountDownTimer(timeInMillis, 1000) {
+        timer = object : CountDownTimer(timeInMillis, SECOND) {
             override fun onTick(millisUntilFinished: Long) {
                 currentTime.value = millisUntilFinished
             }
@@ -69,7 +69,7 @@ class TimerRepository @Inject constructor(
     fun nextMode() {
         CoroutineScope(Dispatchers.IO).launch {
             if (timerMode.value == PomodoroMode.POMODORO) {
-                if (timerBreaksCount.value == 4) {
+                if (timerBreaksCount.value == COUNT_OF_BREAKS) {
                     dataStoreRepository.saveToDataStore(
                         DataStoreRepository.KEY_TIMER_MODE,
                         PomodoroMode.LONG_BREAK.title
@@ -112,5 +112,14 @@ class TimerRepository @Inject constructor(
             PomodoroMode.LONG_BREAK.title -> PomodoroMode.LONG_BREAK
             else -> PomodoroMode.POMODORO
         }
+    }
+
+    companion object {
+        private const val COUNT_OF_BREAKS = 4
+        const val SECOND = 1_000L
+        private const val MINUTE = 60 * SECOND
+        const val POMODORO_TIME = 25 * MINUTE
+        const val SHORT_BREAK_TIME = 5 * MINUTE
+        const val LONG_BREAK_TIME = 15 * MINUTE
     }
 }

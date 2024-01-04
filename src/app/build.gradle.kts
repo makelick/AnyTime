@@ -46,8 +46,8 @@ android {
 dependencies {
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.48.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.48.1")
+    implementation("com.google.dagger:hilt-android:2.50")
+    kapt("com.google.dagger:hilt-android-compiler:2.50")
 
     // Navigation
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
@@ -69,12 +69,6 @@ dependencies {
 
     // DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
-
-    // Kotlin + coroutines
-    implementation("androidx.work:work-runtime-ktx:2.9.0")
-    implementation("androidx.hilt:hilt-work:1.1.0")
-    kapt("androidx.hilt:hilt-compiler:1.1.0")
-
 
     // Default dependencies
     implementation("androidx.core:core-ktx:1.12.0")

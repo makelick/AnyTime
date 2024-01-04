@@ -10,10 +10,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.makelick.anytime.R
 import com.makelick.anytime.databinding.FragmentFocusBinding
+import com.makelick.anytime.model.TimerRepository.Companion.SECOND
 import com.makelick.anytime.model.entity.PomodoroMode
 import com.makelick.anytime.view.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 @AndroidEntryPoint
 class FocusFragment : BaseFragment<FragmentFocusBinding>(FragmentFocusBinding::inflate) {
@@ -130,8 +132,8 @@ class FocusFragment : BaseFragment<FragmentFocusBinding>(FragmentFocusBinding::i
     }
 
     private fun getStringTime(time: Long): String {
-        val minutes = (time / 1000) / 60
-        val seconds = (time / 1000) % 60
-        return String.format("%02d:%02d", minutes, seconds)
+        val minutes = (time / SECOND) / 60
+        val seconds = (time / SECOND) % 60
+        return String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
     }
 }

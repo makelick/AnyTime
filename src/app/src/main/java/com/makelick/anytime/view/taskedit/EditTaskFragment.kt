@@ -65,25 +65,7 @@ class EditTaskFragment : BaseFragment<FragmentEditTaskBinding>(FragmentEditTaskB
             changePriority(priorityButtons, task.priority ?: 0)
 
             date.text = getUnderlinedText(task.date ?: getCurrentDate())
-            date.setOnClickListener {
-                val calendar = Calendar.getInstance()
-
-                val datePicker = MaterialDatePicker.Builder.datePicker()
-                    .setSelection(calendar.timeInMillis)
-                    .build()
-
-                datePicker.addOnPositiveButtonClickListener {
-                    val selectedDate = Date(it)
-                    date.text = getUnderlinedText(
-                        SimpleDateFormat(
-                            "dd.MM.yyyy",
-                            Locale.getDefault()
-                        ).format(selectedDate.time)
-                    )
-                }
-
-                datePicker.show(childFragmentManager, datePicker.toString())
-            }
+            date.setOnClickListener { showDatePicker() }
 
             description.setText(task.description)
 
@@ -91,33 +73,58 @@ class EditTaskFragment : BaseFragment<FragmentEditTaskBinding>(FragmentEditTaskB
                 if (isCreating) getString(R.string.create)
                 else getString(R.string.save)
 
-            editButton.setOnClickListener {
-                val title = name.text.toString().trim()
-                root.clearFocus()
-
-                if (title.isBlank()) {
-                    binding.nameLayout.error = getString(R.string.error_empty)
-                    return@setOnClickListener
-                }
-
-                val newTask = Task(
-                    id = task.id,
-                    isCompleted = task.isCompleted,
-                    title = title,
-                    priority = task.priority,
-                    category = (spinnerCategory.selectedItem ?: null).toString(),
-                    date = date.text.toString(),
-                    description = description.text.toString()
-                )
-
-                if (isCreating) viewModel.addTask(newTask)
-                else viewModel.updateTask(newTask)
-
-            }
+            editButton.setOnClickListener { executeEdit() }
 
             name.onFocusChangeListener = View.OnFocusChangeListener { _, _ ->
                 nameLayout.error = null
             }
+
+        }
+    }
+
+    private fun showDatePicker() {
+
+        val calendar = Calendar.getInstance()
+
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setSelection(calendar.timeInMillis)
+            .build()
+
+        datePicker.addOnPositiveButtonClickListener {
+            val selectedDate = Date(it)
+            binding.date.text = getUnderlinedText(
+                SimpleDateFormat(
+                    "dd.MM.yyyy",
+                    Locale.getDefault()
+                ).format(selectedDate.time)
+            )
+        }
+
+        datePicker.show(childFragmentManager, datePicker.toString())
+    }
+
+    private fun executeEdit() {
+        with(binding) {
+            val title = name.text.toString().trim()
+            root.clearFocus()
+
+            if (title.isBlank()) {
+                binding.nameLayout.error = getString(R.string.error_empty)
+                return
+            }
+
+            val newTask = Task(
+                id = task.id,
+                isCompleted = task.isCompleted,
+                title = title,
+                priority = task.priority,
+                category = (spinnerCategory.selectedItem ?: null).toString(),
+                date = date.text.toString(),
+                description = description.text.toString()
+            )
+
+            if (isCreating) viewModel.addTask(newTask)
+            else viewModel.updateTask(newTask)
 
         }
     }
@@ -213,4 +220,3 @@ class EditTaskFragment : BaseFragment<FragmentEditTaskBinding>(FragmentEditTaskB
         }
     }
 }
-

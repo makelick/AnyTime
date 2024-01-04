@@ -66,7 +66,8 @@ class CategoriesFragment :
     private fun handleCreate(categoryName: String) {
         when {
             categoryName.isBlank() -> showToast(getString(R.string.category_name_empty_error_message))
-            categoryName in viewModel.categories.value -> showToast(getString(R.string.category_already_exists_error_message))
+            categoryName in viewModel.categories.value ->
+                showToast(getString(R.string.category_already_exists_error_message))
             else -> lifecycleScope.launch {
                 val message = if (viewModel.addCategory(categoryName)) {
                     getString(R.string.category_created_message, categoryName)

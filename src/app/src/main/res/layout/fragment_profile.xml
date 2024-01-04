@@ -92,7 +92,6 @@
         app:layout_constraintTop_toBottomOf="@id/profileImage">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/completedCardView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -132,7 +131,6 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/uncompletedCardView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"

@@ -9,6 +9,7 @@ import androidx.core.app.NotificationCompat
 import androidx.navigation.NavDeepLinkBuilder
 import com.makelick.anytime.R
 import com.makelick.anytime.model.TimerRepository
+import com.makelick.anytime.model.TimerRepository.Companion.SECOND
 import com.makelick.anytime.model.entity.PomodoroMode
 import com.makelick.anytime.view.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -43,7 +45,7 @@ class TimerService : Service() {
                     getSystemService(NotificationManager::class.java).notify(2, notification)
                     timerRepository.nextMode()
                     timerRepository.stopTimer()
-                    delay(1000)
+                    delay(SECOND)
                     timerRepository.startTimer(timerRepository.timerMode.value.timeInMillis)
                 }
             }
@@ -55,9 +57,9 @@ class TimerService : Service() {
     override fun onBind(p0: Intent?) = null
 
     private fun getStringTime(time: Long): String {
-        val minutes = (time / 1000) / 60
-        val seconds = (time / 1000) % 60
-        return String.format("%02d:%02d", minutes, seconds)
+        val minutes = (time / SECOND) / 60
+        val seconds = (time / SECOND) % 60
+        return String.format(Locale.getDefault(),"%02d:%02d", minutes, seconds)
     }
 
     private fun createNotification(

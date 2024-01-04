@@ -7,6 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.makelick.anytime.R
 import com.makelick.anytime.databinding.FragmentSplashBinding
+import com.makelick.anytime.model.TimerRepository.Companion.SECOND
 import com.makelick.anytime.view.BaseFragment
 import com.makelick.anytime.view.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,7 +23,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
         super.onViewCreated(view, savedInstanceState)
 
         lifecycleScope.launch {
-            delay(1000)
+            delay(SECOND)
             if (viewModel.isUserLoggedIn()) {
                 findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToTasksFragment())
                 (activity as MainActivity).changeBottomNavSelectedId(R.id.tasks)

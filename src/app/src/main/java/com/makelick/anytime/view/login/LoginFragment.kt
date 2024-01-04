@@ -151,7 +151,7 @@ class LoginFragment :
             }
 
             googleSignInButton.setOnClickListener {
-                signInWithGoogle()
+                googleSignInLauncher.launch(viewModel.googleSignInIntent)
                 root.clearFocus()
             }
         }
@@ -174,32 +174,24 @@ class LoginFragment :
     }
 
     private fun attemptLogin() {
-        with(binding) {
-            val emailStr = email.text.toString()
-            val passwordStr = password.text.toString()
-            if (isValidEmail(emailStr)) {
-                if (viewModel.isLoginMode.value) {
-                    viewModel.login(emailStr, passwordStr)
-                } else {
-                    if (passwordStr != passwordConfirmation.text.toString()) {
-                        passwordConfirmationLayout.error =
-                            getString(R.string.passwords_do_not_match)
-                    } else {
-                        viewModel.signUp(emailStr, passwordStr)
-                    }
-                }
-            } else {
-                emailLayout.error = getString(R.string.invalid_email_format)
-            }
+        val emailStr = binding.email.text.toString()
+        val passwordStr = binding.password.text.toString()
+
+        if (!viewModel.isValidEmail(emailStr)) {
+            binding.emailLayout.error = getString(R.string.invalid_email_format)
+            return
         }
-    }
 
-    private fun isValidEmail(email: String): Boolean {
-        val emailRegex = "^[A-Za-z](.*)(@)(.+)(\\.)(.+)$"
-        return email.matches(emailRegex.toRegex())
-    }
+        if (viewModel.isLoginMode.value) {
+            viewModel.login(emailStr, passwordStr)
+            return
+        }
 
-    private fun signInWithGoogle() {
-        googleSignInLauncher.launch(viewModel.googleSignInIntent)
+        if (passwordStr != binding.passwordConfirmation.text.toString()) {
+            binding.passwordConfirmationLayout.error = getString(R.string.passwords_do_not_match)
+            return
+        }
+
+        viewModel.signUp(emailStr, passwordStr)
     }
 }

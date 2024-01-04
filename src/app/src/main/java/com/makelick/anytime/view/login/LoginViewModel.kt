@@ -51,4 +51,9 @@ class LoginViewModel @Inject constructor(
 
         }
     }
+
+    fun isValidEmail(email: String): Boolean {
+        val emailRegex = "^[A-Za-z](.*)(@)(.+)(\\.)(.+)$"
+        return email.matches(emailRegex.toRegex())
+    }
 }

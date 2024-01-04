@@ -12,7 +12,6 @@
     <string name="invalid_email">Invalid email</string>
     <string name="invalid_email_or_password">Invalid email or password</string>
     <string name="weak_password">Weak password</string>
-    <string name="invalid_password">Invalid password</string>
     <string name="email_already_in_use">Email already in use</string>
     <string name="google_sign_in_failed">Google sign in failed</string>
     <string name="google_web_client_id">70604723089-kck1jheco3037r6qr20b2ndf3k0p5ibm.apps.googleusercontent.com</string>
@@ -21,7 +20,6 @@
     <string name="tasks">Tasks</string>
     <string name="calendar">Calendar</string>
     <string name="profile">Profile</string>
-    <string name="task">Task</string>
     <string name="categories">Categories</string>
     <string name="sign_out">Sign Out</string>
     <string name="profile_picture">profile picture</string>
