@@ -28,6 +28,7 @@ If you're a developer and want to contribute, please follow these steps:
 
 Please note that you may need to create your own Firebase project and replace the existing configuration with your own.
 
-## License
+## UI
 
-This project is open source under the MIT license. See the LICENSE file for more information.
+The application has a simple UI with a few screens. The main screens you can see on screenshots below:
+![AnyTime Screens](https://i.imgur.com/I1oWUoY.png)
